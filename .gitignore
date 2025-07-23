@@ -1,0 +1,66 @@
+## Ignore arquivos de build
+bin/
+obj/
+out/
+
+## Ignora arquivos temporários
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Ignora arquivos do Visual Studio Code
+.vscode/
+
+## Ignora pacotes do NuGet
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+## Ignora arquivos do Rider
+.idea/
+*.sln.iml
+
+## Ignora configurações locais e logs
+*.log
+*.tlog
+*.cache
+*.dbmdl
+*.pdb
+*.vspscc
+*.vssscc
+*.orig
+
+## Ignora arquivos da pasta .vs do Visual Studio
+.vs/
+
+## Ignora configurações de build do MSBuild
+*.Build.csdef
+
+## Ignora diretórios de publicação
+publish/
+App_Data/
+TestResults/
+
+## Ignora arquivos de backup
+*~
+*.bak
+*.tmp
+
+## Ignora arquivos secrets
+secrets.json
+
+## Ignora certificados de desenvolvimento (se houver)
+*.pfx
+*.key
+*.cer
+
+## Ignora arquivos do AutoMapper (se forem gerados)
+*.mapping.cs
+
+# Configurações locais
+**/launchSettings.json
+
+# Configurações de app
+**/appsettings.Development.json
+**/appsettings.json
