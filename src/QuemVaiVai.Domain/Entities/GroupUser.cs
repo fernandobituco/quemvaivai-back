@@ -9,10 +9,10 @@ namespace QuemVaiVai.Domain.Entities
 {
     public class GroupUser : BaseEntity
     {
-        public Guid GroupId { get; set; }
+        public int GroupId { get; set; }
         public Group Group { get; set; } = null!;
 
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; } = null!;
 
         // Role como int para representar enum: 0 = admin, 1 = member

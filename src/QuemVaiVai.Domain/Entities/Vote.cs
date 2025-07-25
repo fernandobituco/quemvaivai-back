@@ -8,10 +8,10 @@ namespace QuemVaiVai.Domain.Entities
 {
     public class Vote : BaseEntity
     {
-        public Guid VoteOptionId { get; set; }
+        public int VoteOptionId { get; set; }
         public VoteOption VoteOption { get; set; } = null!;
 
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; } = null!;
     }
 }

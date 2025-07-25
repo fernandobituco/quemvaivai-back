@@ -24,10 +24,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Comment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -55,8 +57,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("deleted_user");
 
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer")
                         .HasColumnName("event_id");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -67,8 +69,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("updated_user");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -82,10 +84,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Event", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -115,8 +119,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("event_date");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer")
                         .HasColumnName("group_id");
 
                     b.Property<string>("Location")
@@ -147,10 +151,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Group", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -199,10 +205,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.GroupUser", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -224,8 +232,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("deleted_user");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer")
                         .HasColumnName("group_id");
 
                     b.Property<int>("Role")
@@ -240,8 +248,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("updated_user");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -255,16 +263,18 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.TaskItem", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("AssignedTo")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("AssignedUserId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("AssignedTo")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -295,8 +305,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_done");
 
-                    b.Property<Guid>("TaskListId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("TaskListId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -317,10 +327,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.TaskList", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -342,8 +354,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("deleted_user");
 
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer")
                         .HasColumnName("event_id");
 
                     b.Property<string>("Title")
@@ -368,10 +380,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -430,10 +444,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.UserEvent", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -455,8 +471,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("deleted_user");
 
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer")
                         .HasColumnName("event_id");
 
                     b.Property<int>("Status")
@@ -471,8 +487,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("updated_user");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -486,10 +502,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Vote", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -519,12 +537,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("updated_user");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
-                    b.Property<Guid>("VoteOptionId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("VoteOptionId")
+                        .HasColumnType("integer")
                         .HasColumnName("vote_option_id");
 
                     b.HasKey("Id");
@@ -538,10 +556,12 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.VoteOption", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -563,8 +583,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("deleted_user");
 
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid")
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer")
                         .HasColumnName("event_id");
 
                     b.Property<DateTime?>("SuggestedDate")

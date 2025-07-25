@@ -8,7 +8,7 @@ namespace QuemVaiVai.Domain.Entities
 {
     public class VoteOption : BaseEntity
     {
-        public Guid EventId { get; set; }
+        public int EventId { get; set; }
         public Event Event { get; set; } = null!;
 
         public DateTime? SuggestedDate { get; set; }

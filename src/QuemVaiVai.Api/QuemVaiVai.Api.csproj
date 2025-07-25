@@ -21,4 +21,8 @@
     <ProjectReference Include="..\QuemVaiVai.Infrastructure\QuemVaiVai.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Responses\" />
+  </ItemGroup>
+
 </Project>

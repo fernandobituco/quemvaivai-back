@@ -1,6 +1,9 @@
 
 using Microsoft.AspNetCore.Mvc;
+using QuemVaiVai.Api.Responses;
 using QuemVaiVai.Application.DTOs;
+using QuemVaiVai.Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace QuemVaiVai.Api.Controllers;
 
@@ -8,23 +11,31 @@ namespace QuemVaiVai.Api.Controllers;
 [ApiController]
 public class UserController : BaseController<UserController>
 {
-    public UserController(IHttpContextAccessor httpContextAccessor, ILogger<UserController> logger) : base(httpContextAccessor, logger)
+    private readonly IUserAppService _userAppService;
+    public UserController(
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<UserController> logger,
+        IUserAppService userAppService) : base(httpContextAccessor, logger)
     {
+        _userAppService = userAppService;
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UserLoginDTO dto)
+    [ProducesResponseType(typeof(SuccessResponse<LoginResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Login([FromBody] UserLoginDTO dto)
     {
         try
         {
             if (!ModelState.IsValid)
                 return Fail("Dados inválidos.");
 
-            // Simulação de login (buscar no banco de verdade)
-            if (dto.Email == "teste@exemplo.com" && dto.Password == "123456")
+            var token = await _userAppService.LoginAsync(dto);
+
+            if (!string.IsNullOrWhiteSpace(token))
             {
-                var token = "fake-jwt-token";
-                return Success(new { Token = token });
+                return Success(new LoginResponse(token));
             }
 
             return Fail("Credenciais inválidas.", 401);
@@ -36,22 +47,18 @@ public class UserController : BaseController<UserController>
     }
 
     [HttpPost("create")]
-    public IActionResult CreateUser([FromBody] CreateUserDTO dto)
+    [ProducesResponseType(typeof(SuccessResponse<CreatedUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO dto)
     {
         try
         {
             if (!ModelState.IsValid)
                 return Fail("Dados inválidos.");
 
-            // Simulação de criação (salvar no banco real aqui)
-            var createdUser = new
-            {
-                Id = Guid.NewGuid(),
-                dto.Name,
-                dto.Email
-            };
-
-            return Success(createdUser);
+            var createdUser = await _userAppService.CreateUserAsync(dto);
+            return Success(new CreatedUserResponse(createdUser.Id, createdUser.Name, createdUser.Email, createdUser.CreatedAt));
         }
         catch (Exception ex)
         {

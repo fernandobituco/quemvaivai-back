@@ -30,6 +30,17 @@ namespace QuemVaiVai.Infrastructure.Contexts
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var clrType = entityType.ClrType;
+
+                // Configuração de geração automática de ID
+                var idProp = clrType.GetProperty("Id");
+                if (idProp != null && idProp.PropertyType == typeof(int))
+                {
+                    modelBuilder.Entity(clrType)
+                        .Property("Id")
+                        .ValueGeneratedOnAdd();
+                }
+
+                // Filtro para deleção lógica
                 var deletedProp = clrType.GetProperty("Deleted");
 
                 if (deletedProp != null && deletedProp.PropertyType == typeof(bool))

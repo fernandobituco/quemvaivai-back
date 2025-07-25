@@ -9,6 +9,8 @@ var frontendUrl = builder.Configuration["FRONTEND_URL"] ?? "http://localhost:300
 
 ApiConfiguration.AddApiServices(builder.Services);
 
+DependencyInjection.AddDependencyInjections(builder.Services);
+
 CorsConfiguration.AddCorsConfiguration(builder.Services, frontendUrl);
 
 builder.Services.AddControllers();
