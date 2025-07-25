@@ -25,43 +25,60 @@ QuemVaiVai.Api/
 ├── Helpers/  
 └── Program.cs
 
-markdown
+## 🚀 Executando localmente  
 
-CopiarEditar
+### Pré-requisitos
 
-`## 🚀 Executando localmente  ### Pré-requisitos  - [.NET SDK 8](https://dotnet.microsoft.com/download) - PostgreSQL - Redis (opcional) - Docker (opcional)  ### Passos  ```bash # Restaurar pacotes dotnet restore  # Rodar migrações (se aplicável) dotnet ef database update  # Executar a aplicação dotnet run`
+- [.NET SDK 8](https://dotnet.microsoft.com/download)
+- PostgreSQL 
+- Redis (opcional) 
+- Docker (opcional)  
+
+### Passos
+
+```bash 
+# Restaurar pacotes 
+dotnet restore
+
+# Rodar migrações (se aplicável) 
+dotnet ef database update  
+ 
+# Executar a aplicação
+dotnet run
+ ```
 
 Acesse `https://localhost:5001/swagger` para ver a documentação interativa da API.
 
 ## 🧪 Testes
 
-bash
-
-CopiarEditar
-
-`dotnet test`
+```bash
+dotnet test
+```
 
 ## 🐳 Docker (opcional)
 
-bash
-
-CopiarEditar
-
-`docker-compose up --build`
+```bash
+docker-compose up --build
+```
 
 ## 🔐 Variáveis de ambiente
 
 Configure suas variáveis no arquivo `.env` (ou `appsettings.Development.json`):
 
-json
+```json
+{   
+    "JwtSettings": {
+        "SecretKey": "sua-chave-secreta-aqui",
+        "Issuer": "QuemVaiVai",
+        "Audience": "QuemVaiVaiUsers"   
+    },   
+    "ConnectionStrings": {
+        "DefaultConnection": "Host=localhost;Database=quemvaivai;Username=postgres;Password=senha"   
+    } 
+}
+```
 
-CopiarEditar
-
-`{   "JwtSettings": {     "SecretKey": "sua-chave-secreta-aqui",     "Issuer": "QuemVaiVai",     "Audience": "QuemVaiVaiUsers"   },   "ConnectionStrings": {     "DefaultConnection": "Host=localhost;Database=quemvaivai;Username=postgres;Password=senha"   } }`
-
----
-
-### 🤝 Contribuindo
+## 🤝 Contribuindo
 
 1. Fork o repositório
 2. Crie sua branch: `git checkout -b minha-feature`
