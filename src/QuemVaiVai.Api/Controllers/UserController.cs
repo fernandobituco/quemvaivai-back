@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Api.Responses;
 using QuemVaiVai.Application.DTOs;
-using QuemVaiVai.Application.Interfaces;
+using QuemVaiVai.Domain.Interfaces.Services;
 using System.Threading.Tasks;
 
 namespace QuemVaiVai.Api.Controllers;

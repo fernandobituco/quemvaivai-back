@@ -1,38 +1,54 @@
 ﻿using AutoMapper;
 using QuemVaiVai.Application.DTOs;
-using QuemVaiVai.Application.Interfaces;
+using QuemVaiVai.Application.Helpers;
+using QuemVaiVai.Application.Interfaces.DapperRepositories;
+using QuemVaiVai.Application.Interfaces.Repositories;
+using QuemVaiVai.Application.Interfaces.Security;
 using QuemVaiVai.Domain.Entities;
+using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuemVaiVai.Application.Services
 {
-    public class UserAppService : IUserAppService
+    public class UserAppService : ServiceBase<User>, IUserAppService
     {
-        private readonly IUserService _userService;
+        private readonly IUserDapperRepository _dapperRepository;
+        private readonly IPasswordHasher _passwordHasher;
+        private readonly JwtTokenGenerator _jwtGenerator;
         private readonly IMapper _mapper;
-
-        public UserAppService(IUserService userService, IMapper mapper)
+        public UserAppService(
+            IUserRepository repository,
+            IUserDapperRepository dapperRepository,
+            IPasswordHasher passwordHasher,
+            JwtTokenGenerator jwtGenerator,
+            IMapper mapper) : base(repository)
         {
-            _userService = userService;
+            _dapperRepository = dapperRepository;
+            _passwordHasher = passwordHasher;
+            _jwtGenerator = jwtGenerator;
             _mapper = mapper;
         }
 
         public async Task<UserDTO> CreateUserAsync(CreateUserDTO request)
         {
-            var user = _mapper.Map<User>(request);
-            await _userService.CreateAsync(user);
-            return _mapper.Map<UserDTO>(user);
+            var exists = await _dapperRepository.ExistsByEmail(request.Email);
+            if (exists)
+            {
+                throw new EmailAlreadyExists();
+            }
+            User user = _mapper.Map<User>(request);
+            var response = _mapper.Map<UserDTO>(await _repository.AddAsync(user));
+            return response;
         }
 
         public async Task<string> LoginAsync(UserLoginDTO request)
         {
-            var user = await _userService.AuthenticateAsync(request.Email, request.Password);
-            return user != null ? "TOKEN" : throw new UnauthorizedAccessException();
+            var user = await _dapperRepository.GetByEmail(request.Email);
+
+            if (_passwordHasher.Verify(request.Password, user.PasswordHash))
+                throw new UnauthorizedException();
+
+            return _jwtGenerator.GenerateToken(user);
         }
     }
 }

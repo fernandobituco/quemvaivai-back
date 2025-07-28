@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Api.Responses;
+using QuemVaiVai.Domain.Exceptions;
 
 namespace QuemVaiVai.Api.Controllers;
 
@@ -36,7 +37,11 @@ public abstract class BaseController<T> : ControllerBase
 
     protected IActionResult ExceptionResponse(Exception ex)
     {
-        _logger.LogError(ex, "Erro interno no servidor.");
-        return StatusCode(500, new ErrorResponse(false, ex.Message));
+        return ex switch
+        {
+            NotFoundException => Fail(ex.Message, 404),
+            UnauthorizedException => Fail(ex.Message, 401),
+            _ => Fail("Erro interno no servidor.", 500)
+        };
     }
 }

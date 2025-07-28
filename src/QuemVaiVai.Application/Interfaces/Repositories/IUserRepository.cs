@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuemVaiVai.Domain.Interfaces.Services
+namespace QuemVaiVai.Application.Interfaces.Repositories
 {
-    public interface IUserService
+    public interface IUserRepository : IRepository<User>
     {
-        Task<bool> ValidateEmail(string email);
     }
 }

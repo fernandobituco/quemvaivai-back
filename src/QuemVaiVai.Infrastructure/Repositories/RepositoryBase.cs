@@ -1,20 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuemVaiVai.Domain.Entities;
-using QuemVaiVai.Domain.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using QuemVaiVai.Application.Interfaces.Repositories;
+using QuemVaiVai.Infrastructure.Contexts;
 
 namespace QuemVaiVai.Infrastructure.Repositories
 {
     public class RepositoryBase<T> : IRepository<T> where T : BaseEntity
     {
-        protected readonly DbContext _context;
+        protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public RepositoryBase(DbContext context)
+        public RepositoryBase(AppDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
@@ -30,10 +26,11 @@ namespace QuemVaiVai.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            entity.Id = await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task UpdateAsync(T entity)

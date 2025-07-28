@@ -1,13 +1,8 @@
 ﻿using QuemVaiVai.Domain.Entities;
-using QuemVaiVai.Domain.Interfaces.Repositories;
+using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Domain.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace QuemVaiVai.Domain.Services
+namespace QuemVaiVai.Application.Services
 {
     public class ServiceBase<T> : IService<T> where T : BaseEntity
     {
@@ -28,9 +23,9 @@ namespace QuemVaiVai.Domain.Services
             return await _repository.GetAllAsync();
         }
 
-        public virtual async Task CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
-            await _repository.AddAsync(entity);
+            return await _repository.AddAsync(entity);
         }
 
         public virtual async Task UpdateAsync(T entity)
