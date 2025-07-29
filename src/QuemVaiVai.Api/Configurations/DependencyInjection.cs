@@ -1,12 +1,13 @@
 using QuemVaiVai.Application.Helpers;
-using QuemVaiVai.Application.Interfaces;
-using QuemVaiVai.Application.Services;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
+using QuemVaiVai.Application.Interfaces.Email;
 using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Application.Interfaces.Security;
+using QuemVaiVai.Application.Services;
 using QuemVaiVai.Domain.Interfaces.Services;
 using QuemVaiVai.Domain.Services;
 using QuemVaiVai.Infrastructure.DapperRepositories;
+using QuemVaiVai.Infrastructure.Email;
 using QuemVaiVai.Infrastructure.Repositories;
 using QuemVaiVai.Infrastructure.Security;
 
@@ -29,5 +30,9 @@ public static class DependencyInjection
         //Security
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<JwtTokenGenerator>();
+
+        //Email
+        services.AddScoped<IEmailSender, SmtpEmailSender>();
+        services.AddScoped<IEmailTemplateBuilder, EmailTemplateBuilder>();
     }
 }

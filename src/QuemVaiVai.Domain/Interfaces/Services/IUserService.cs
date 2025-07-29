@@ -10,5 +10,6 @@ namespace QuemVaiVai.Domain.Interfaces.Services
     public interface IUserService
     {
         Task<bool> ValidateEmail(string email);
+        void ValidatePassword(string email);
     }
 }

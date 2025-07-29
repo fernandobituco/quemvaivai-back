@@ -20,7 +20,7 @@ namespace QuemVaiVai.Infrastructure.Contexts
 
         public string Table(string tableName)
         {
-            return $"{Schema}.\"{TablePrefix}{tableName}\"";
+            return $"{Schema}.{TablePrefix}{tableName}";
         }
     }
 }

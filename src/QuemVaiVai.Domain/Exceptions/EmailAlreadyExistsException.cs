@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace QuemVaiVai.Domain.Exceptions
 {
-    public class EmailAlreadyExists(string message = "Esse email não está disponível.") : Exception(message);
+    public class EmailAlreadyExistsException(string message = "Esse email não está disponível.") : Exception(message);
 }

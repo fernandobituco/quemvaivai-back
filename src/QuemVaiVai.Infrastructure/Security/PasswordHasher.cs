@@ -9,6 +9,8 @@ namespace QuemVaiVai.Infrastructure.Security
         public string Hash(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
+
+
         }
 
         public bool Verify(string password, string hashedPassword)

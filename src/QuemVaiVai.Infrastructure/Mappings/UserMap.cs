@@ -22,7 +22,6 @@ namespace QuemVaiVai.Infrastructure.Mappings
             builder.Property(u => u.Name).IsRequired().HasColumnName("name").HasMaxLength(100);
             builder.Property(u => u.Email).IsRequired().HasColumnName("email").HasMaxLength(100);
             builder.Property(u => u.PasswordHash).HasColumnName("password_hash").IsRequired();
-            builder.Property(u => u.PasswordSalt).HasColumnName("password_salt").IsRequired();
 
             //BaseEntity properties
             builder.Property(u => u.CreatedAt).HasColumnName("created_at").IsRequired();

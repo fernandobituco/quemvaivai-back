@@ -41,6 +41,8 @@ public abstract class BaseController<T> : ControllerBase
         {
             NotFoundException => Fail(ex.Message, 404),
             UnauthorizedException => Fail(ex.Message, 401),
+            InvalidPasswordException => Fail(ex.Message,400),
+            EmailAlreadyExistsException => Fail(ex.Message,400),
             _ => Fail("Erro interno no servidor.", 500)
         };
     }

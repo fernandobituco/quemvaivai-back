@@ -19,7 +19,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         public async Task<bool> ExistsByEmail(string email)
         {
             var table = _queryContext.Table("users");
-            var sql = @$"SELECT 1 FROM {table} WHERE ""Email"" = @Email LIMIT 1;";
+            var sql = $"SELECT 1 FROM {table} WHERE email = @Email LIMIT 1;";
             var exists = await _connection.ExecuteScalarAsync<int?>(sql, new { Email = email });
 
             bool userExists = exists.HasValue;
