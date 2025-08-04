@@ -5,7 +5,7 @@ using System.Data;
 
 namespace QuemVaiVai.Infrastructure.DapperRepositories
 {
-    public class DapperRepository<T> : IDapperRepository<T>
+    public class DapperRepository<T>
     {
         protected readonly IDbConnection _connection;
         protected readonly DapperQueryContext _queryContext;
@@ -18,20 +18,19 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             _queryContext = queryContext;
         }
 
-        public async Task<IEnumerable<T>> QueryAsync(string sql, object? parameters = null)
+        protected async Task<IEnumerable<T>> QueryAsync(string sql, object? parameters = null)
         {
             return await _connection.QueryAsync<T>(sql, parameters);
         }
 
-        public async Task<T?> QueryFirstOrDefaultAsync(string sql, object? parameters = null)
+        protected async Task<T?> QueryFirstOrDefaultAsync(string sql, object? parameters = null)
         {
             return await _connection.QueryFirstOrDefaultAsync<T>(sql, parameters);
         }
 
-        public async Task<int> ExecuteAsync(string sql, object? parameters = null)
+        protected async Task<int> ExecuteAsync(string sql, object? parameters = null)
         {
             return await _connection.ExecuteAsync(sql, parameters);
         }
     }
-
 }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuemVaiVai.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuemVaiVai.Infrastructure.Mappings
 {
@@ -17,7 +12,6 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Id).HasColumnName("id").IsRequired();
 
             builder.Property(c => c.UserId).HasColumnName("user_id").IsRequired();
 
@@ -36,6 +30,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
             builder.Property(c => c.Content).HasColumnName("content").IsRequired().HasMaxLength(500);
 
             //BaseEntity properties
+            builder.Property(c => c.Id).HasColumnName("id").IsRequired();
             builder.Property(c => c.CreatedAt).HasColumnName("created_at").IsRequired();
             builder.Property(c => c.CreatedUser).HasColumnName("created_user").IsRequired();
             builder.Property(c => c.UpdatedAt).HasColumnName("updated_at");

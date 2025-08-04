@@ -26,24 +26,39 @@ namespace QuemVaiVai.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity, int? userId = null)
         {
+            entity.CreatedAt = DateTime.UtcNow;
+            if (userId != null)
+            {
+                entity.CreatedUser = (int)userId;
+            }
             await _dbSet.AddAsync(entity);
             entity.Id = await _context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity, int? userId = null)
         {
+            entity.UpdatedAt = DateTime.UtcNow;
+            if (userId != null)
+            {
+                entity.UpdatedUser = (int)userId;
+            }
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id, int? userId = null)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
+                //entity.DeletedAt = DateTime.UtcNow;
+                //if (userId != null)
+                //{
+                //    entity.DeletedUser = (int)userId;
+                //}
                 _dbSet.Remove(entity);
                 await _context.SaveChangesAsync();
             }

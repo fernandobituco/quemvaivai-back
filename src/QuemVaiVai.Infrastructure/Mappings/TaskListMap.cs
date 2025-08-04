@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuemVaiVai.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuemVaiVai.Infrastructure.Mappings
 {
@@ -17,20 +12,20 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(tl => tl.Id);
 
-            builder.Property(tl => tl.Id).HasColumnName("id").IsRequired();
 
             builder.Property(tl => tl.Title).HasColumnName("title");
 
             builder.Property(tl => tl.EventId).HasColumnName("event_id");
 
             //BaseEntity properties
+            builder.Property(tl => tl.Id).HasColumnName("id").IsRequired();
             builder.Property(tl => tl.CreatedAt).HasColumnName("created_at").IsRequired();
             builder.Property(tl => tl.CreatedUser).HasColumnName("created_user").IsRequired();
             builder.Property(tl => tl.UpdatedAt).HasColumnName("updated_at");
             builder.Property(tl => tl.UpdatedUser).HasColumnName("updated_user");
             builder.Property(tl => tl.DeletedAt).HasColumnName("deleted_at");
             builder.Property(tl => tl.DeletedUser).HasColumnName("deleted_user");
-            builder.Property(c => c.Deleted).HasColumnName("deleted");
+            builder.Property(tl => tl.Deleted).HasColumnName("deleted");
         }
     }
 }

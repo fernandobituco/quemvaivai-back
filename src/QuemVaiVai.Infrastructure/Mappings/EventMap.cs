@@ -17,7 +17,6 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(e => e.Id);
 
-            builder.Property(e => e.Id).HasColumnName("id").IsRequired();
             builder.Property(e => e.Title).HasColumnName("title").IsRequired().HasMaxLength(100);
             builder.Property(e => e.Description).HasColumnName("description");
             builder.Property(e => e.Location).HasColumnName("location").HasMaxLength(200);
@@ -30,13 +29,14 @@ namespace QuemVaiVai.Infrastructure.Mappings
                    .HasForeignKey(e => e.GroupId);
 
             //BaseEntity properties
+            builder.Property(e => e.Id).HasColumnName("id").IsRequired();
             builder.Property(e => e.CreatedAt).HasColumnName("created_at").IsRequired();
             builder.Property(e => e.CreatedUser).HasColumnName("created_user").IsRequired();
             builder.Property(e => e.UpdatedAt).HasColumnName("updated_at");
             builder.Property(e => e.UpdatedUser).HasColumnName("updated_user");
             builder.Property(e => e.DeletedAt).HasColumnName("deleted_at");
             builder.Property(e => e.DeletedUser).HasColumnName("deleted_user");
-            builder.Property(c => c.Deleted).HasColumnName("deleted");
+            builder.Property(e => e.Deleted).HasColumnName("deleted");
         }
     }
 }

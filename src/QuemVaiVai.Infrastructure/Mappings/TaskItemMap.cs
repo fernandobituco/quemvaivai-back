@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuemVaiVai.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuemVaiVai.Infrastructure.Mappings
 {
@@ -17,7 +12,6 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(ti => ti.Id);
 
-            builder.Property(ti => ti.Id).HasColumnName("id").IsRequired();
 
             builder.Property(ti => ti.Description).HasColumnName("description").IsRequired();
             builder.Property(ti => ti.IsDone).HasColumnName("is_done").IsRequired();
@@ -28,13 +22,14 @@ namespace QuemVaiVai.Infrastructure.Mappings
                    .OnDelete(DeleteBehavior.Cascade);
 
             //BaseEntity properties
+            builder.Property(ti => ti.Id).HasColumnName("id").IsRequired();
             builder.Property(ti => ti.CreatedAt).HasColumnName("created_at").IsRequired();
             builder.Property(ti => ti.CreatedUser).HasColumnName("created_user").IsRequired();
             builder.Property(ti => ti.UpdatedAt).HasColumnName("updated_at");
             builder.Property(ti => ti.UpdatedUser).HasColumnName("updated_user");
             builder.Property(ti => ti.DeletedAt).HasColumnName("deleted_at");
             builder.Property(ti => ti.DeletedUser).HasColumnName("deleted_user");
-            builder.Property(c => c.Deleted).HasColumnName("deleted");
+            builder.Property(ti => ti.Deleted).HasColumnName("deleted");
         }
     }
 }
