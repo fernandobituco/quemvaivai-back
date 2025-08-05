@@ -19,9 +19,8 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<EmailConfirmationToken> GetByToken(string token)
         {
-            var table = _queryContext.Table("email_confirmation_tokens");
-            var sql = $"SELECT * FROM {table} WHERE token = @Token";
-            var user = await QueryFirstOrDefaultAsync(sql, new { Token = token });
+            var sql = GetBaseEntityValues + ", user_id as UserId, used as Used, expiration as Expiration, token as Token FROM {table} WHERE token = @Token";
+            var user = await Get(sql, new { Token = token });
 
             return user;
         }

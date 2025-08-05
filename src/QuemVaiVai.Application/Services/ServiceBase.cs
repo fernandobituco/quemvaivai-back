@@ -1,6 +1,6 @@
 ﻿using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Application.Interfaces.Repositories;
-using QuemVaiVai.Domain.Interfaces.Services;
+using QuemVaiVai.Application.Interfaces.Services;
 
 namespace QuemVaiVai.Application.Services
 {
@@ -13,7 +13,7 @@ namespace QuemVaiVai.Application.Services
             _repository = repository;
         }
 
-        public virtual async Task<T?> GetByIdAsync(Guid id)
+        public virtual async Task<T?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
@@ -33,7 +33,7 @@ namespace QuemVaiVai.Application.Services
             await _repository.UpdateAsync(entity);
         }
 
-        public virtual async Task DeleteAsync(Guid id)
+        public virtual async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
         }

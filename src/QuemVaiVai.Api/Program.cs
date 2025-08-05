@@ -1,19 +1,21 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using QuemVaiVai.Api.Configurations;
 using QuemVaiVai.Api.Extensions;
+using QuemVaiVai.Application.Interfaces.Services;
+using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Infrastructure.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var frontendUrl = builder.Configuration["FRONTEND_URL"] ?? "http://localhost:3000";
+builder.Services.Configure<AppSettings>(builder.Configuration);
+var frontendUrl = builder.Configuration["FRONT_END_URL"] ?? "http://localhost:3000";
 
-ApiConfiguration.AddApiServices(builder.Services);
+ApiConfiguration.AddApiServices(builder.Services, frontendUrl);
 
 EmailConfiguration.AddEmailConfiguration(builder.Services, builder.Configuration);
 
 DependencyInjection.AddDependencyInjections(builder.Services);
-
-CorsConfiguration.AddCorsConfiguration(builder.Services, frontendUrl);
 
 builder.Services.AddControllers();
 
@@ -40,8 +42,6 @@ using (var scope = app.Services.CreateScope())
 //}
 
 ApiConfiguration.UseApiConfiguration(app);
-
-CorsConfiguration.UseCorsConfiguration(app);
 
 app.MapControllers();
 

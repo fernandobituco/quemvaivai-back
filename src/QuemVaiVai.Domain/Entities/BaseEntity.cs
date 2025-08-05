@@ -10,15 +10,19 @@ namespace QuemVaiVai.Domain.Entities
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public Guid CreatedUser { get; set; }
+        public int CreatedUser { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public Guid UpdatedUser { get; set; }
-        public DateTime DeletedAt { get; set; } = DateTime.UtcNow;
-        public Guid DeletedUser { get; set; }
+        public int UpdatedUser { get; set; }
+        public DateTime DeletedAt { get; set; }
+        public int DeletedUser { get; set; }
         public bool Deleted { get; set; }
-        public void UpdateTimestamp()
+        public void UpdateTimestamp(int? userId = null)
         {
             UpdatedAt = DateTime.UtcNow;
+            if (userId.HasValue)
+            {
+                UpdatedUser = userId.Value;
+            }
         }
     }
 }

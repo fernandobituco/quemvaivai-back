@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Api.Responses;
 using QuemVaiVai.Application.DTOs;
-using QuemVaiVai.Domain.Interfaces.Services;
+using QuemVaiVai.Application.Interfaces.Services;
 using System.Threading.Tasks;
 
 namespace QuemVaiVai.Api.Controllers;
@@ -26,43 +26,27 @@ public class UserController : BaseController<UserController>
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Login([FromBody] UserLoginDTO dto)
     {
-        try
+        ModelStateValidation();
+
+        var token = await _userAppService.LoginAsync(dto);
+
+        if (!string.IsNullOrWhiteSpace(token))
         {
-            if (!ModelState.IsValid)
-                return Fail("Dados inválidos.");
-
-            var token = await _userAppService.LoginAsync(dto);
-
-            if (!string.IsNullOrWhiteSpace(token))
-            {
-                return Success(new LoginResponse(token));
-            }
-
-            return Fail("Credenciais inválidas.", 401);
+            return Success(new LoginResponse(token));
         }
-        catch (Exception ex)
-        {
-            return ExceptionResponse(ex);
-        }
+
+        return Fail("Credenciais inválidas.", 401);
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     [ProducesResponseType(typeof(SuccessResponse<CreatedUserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO dto)
     {
-        try
-        {
-            if (!ModelState.IsValid)
-                return Fail("Dados inválidos.");
+        ModelStateValidation();
 
-            var createdUser = await _userAppService.CreateUserAsync(dto);
-            return Success(new CreatedUserResponse(createdUser.Id, createdUser.Name, createdUser.Email, createdUser.CreatedAt));
-        }
-        catch (Exception ex)
-        {
-            return ExceptionResponse(ex);
-        }
+        var createdUser = await _userAppService.CreateUserAsync(dto);
+        return Success(new CreatedUserResponse(createdUser.Id, createdUser.Name, createdUser.Email, createdUser.CreatedAt));
     }
 }

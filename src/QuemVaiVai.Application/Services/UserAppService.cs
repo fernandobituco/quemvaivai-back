@@ -5,9 +5,11 @@ using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Application.Interfaces.Email;
 using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Application.Interfaces.Security;
+using QuemVaiVai.Application.Interfaces.Services;
+using QuemVaiVai.Domain.Interfaces.Services;
 using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Domain.Exceptions;
-using QuemVaiVai.Domain.Interfaces.Services;
+using Microsoft.Extensions.Options;
 
 namespace QuemVaiVai.Application.Services
 {
@@ -20,6 +22,9 @@ namespace QuemVaiVai.Application.Services
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly IEmailTemplateBuilder _emailTemplateBuilder;
+        private readonly IEmailConfirmationTokenService _emailConfirmationTokenService;
+        private readonly IEmailConfirmationTokenRepository _emailConfirmationTokenRepository;
+        private readonly AppSettings _appSettings;
 
         public UserAppService(
             IUserRepository repository,
@@ -29,7 +34,10 @@ namespace QuemVaiVai.Application.Services
             IMapper mapper,
             IUserService userService,
             IEmailSender emailSender,
-            IEmailTemplateBuilder emailTemplateBuilder) : base(repository)
+            IEmailTemplateBuilder emailTemplateBuilder,
+            IEmailConfirmationTokenService emailConfirmationTokenService,
+            IEmailConfirmationTokenRepository emailConfirmationTokenRepository,
+            IOptions<AppSettings> appSettings) : base(repository)
         {
             _dapperRepository = dapperRepository;
             _passwordHasher = passwordHasher;
@@ -38,6 +46,9 @@ namespace QuemVaiVai.Application.Services
             _userService = userService;
             _emailSender = emailSender;
             _emailTemplateBuilder = emailTemplateBuilder;
+            _emailConfirmationTokenService = emailConfirmationTokenService;
+            _emailConfirmationTokenRepository = emailConfirmationTokenRepository;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<UserDTO> CreateUserAsync(CreateUserDTO request)
@@ -49,13 +60,18 @@ namespace QuemVaiVai.Application.Services
 
             user.PasswordHash = _passwordHasher.Hash(request.Password);
 
-            var response = _mapper.Map<UserDTO>(await _repository.AddAsync(user));
+            var response = _mapper.Map<UserDTO>(await CreateAsync(user));
 
             if (response != null)
             {
+                var token = _emailConfirmationTokenService.GenerateToken(response.Id);
+                await _emailConfirmationTokenRepository.AddAsync(token);
+                var url = $"{_appSettings.FRONT_END_URL}/account-confirmation?token={token.Token}";
+
                 var body = await _emailTemplateBuilder.BuildTemplateAsync("AccountConfirmation", new Dictionary<string, string>
                 {
                     ["Name"] = request.Name,
+                    ["ConfirmationUrl"] = url,
                 });
 
                 await _emailSender.SendEmailAsync(request.Email, "AccountConfirmation", body);

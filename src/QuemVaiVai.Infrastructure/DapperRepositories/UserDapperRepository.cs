@@ -18,20 +18,16 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<bool> ExistsByEmail(string email)
         {
-            var table = _queryContext.Table("users");
-            var sql = $"SELECT 1 FROM {table} WHERE email = @Email LIMIT 1;";
-            var exists = await _connection.ExecuteScalarAsync<int?>(sql, new { Email = email });
+            var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE email = @Email );";
+            var exists = await Get<bool>(sql, new { Email = email });
 
-            bool userExists = exists.HasValue;
-
-            return userExists;
+            return exists;
         }
 
         public async Task<User> GetByEmail(string email)
         {
-            var table = _queryContext.Table("users");
-            var sql = $"SELECT * FROM {table} WHERE email = @Email";
-            var user = await QueryFirstOrDefaultAsync(sql, new { Email = email });
+            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE email = @Email";
+            var user = await Get(sql, new { Email = email });
 
             if (user == null)
                 throw new NotFoundException("Usuário");
@@ -41,9 +37,8 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<User> GetById(int id)
         {
-            var table = _queryContext.Table("users");
-            var sql = $"SELECT * FROM {table} WHERE id = @Id";
-            var user = await QueryFirstOrDefaultAsync(sql, new { Id = id.ToString() });
+            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE id = @Id";
+            var user = await Get(sql, new { Id = id });
 
             if (user == null)
                 throw new NotFoundException("Usuário");

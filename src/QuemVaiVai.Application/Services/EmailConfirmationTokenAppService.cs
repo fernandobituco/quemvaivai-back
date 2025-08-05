@@ -1,0 +1,52 @@
+﻿using QuemVaiVai.Application.Interfaces.DapperRepositories;
+using QuemVaiVai.Application.Interfaces.Repositories;
+using QuemVaiVai.Application.Interfaces.Services;
+using QuemVaiVai.Domain.Entities;
+using QuemVaiVai.Domain.Exceptions;
+using QuemVaiVai.Domain.Interfaces.Services;
+
+namespace QuemVaiVai.Application.Services
+{
+    public class EmailConfirmationTokenAppService : ServiceBase<EmailConfirmationToken>, IEmailConfirmationTokenAppService
+    {
+        private readonly IEmailConfirmationTokenDapperRepository _dapperRepository;
+        private readonly IEmailConfirmationTokenService _service;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserDapperRepository _userDapperRepository;
+        public EmailConfirmationTokenAppService(
+            IEmailConfirmationTokenRepository repository,
+            IEmailConfirmationTokenDapperRepository dapperRepository,
+            IUserRepository userRepository,
+            IEmailConfirmationTokenService service,
+            IUserDapperRepository userDapperRepository) : base(repository)
+        {
+            _dapperRepository = dapperRepository;
+            _userRepository = userRepository;
+            _service = service;
+            _userDapperRepository = userDapperRepository;
+        }
+
+        public async Task ConfirmAccount(string token)
+        {
+            var emailConfirmationToken = await _dapperRepository.GetByToken(token);
+
+            if (emailConfirmationToken == null)
+                throw new NotFoundException("Token");
+
+            _service.ValidateToken(emailConfirmationToken);
+
+            await ConfirmUserAccount(emailConfirmationToken);
+
+            emailConfirmationToken.Used = true;
+
+            await _repository.UpdateAsync(emailConfirmationToken);
+        }
+
+        private async Task ConfirmUserAccount(EmailConfirmationToken emailConfirmationToken)
+        {
+            var user = await _userRepository.GetByIdAsync(emailConfirmationToken.UserId);
+            user.Confirmed = true;
+            await _userRepository.UpdateAsync(user);
+        }
+    }
+}

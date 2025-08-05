@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using QuemVaiVai.Api.Responses;
 using QuemVaiVai.Domain.Exceptions;
 
@@ -7,7 +8,7 @@ namespace QuemVaiVai.Api.Controllers;
 public abstract class BaseController<T> : ControllerBase
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<T> _logger;
+    protected readonly ILogger<T> _logger;
     protected BaseController(IHttpContextAccessor httpContextAccessor, ILogger<T> logger)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -32,18 +33,23 @@ public abstract class BaseController<T> : ControllerBase
     protected IActionResult Fail(string errorMessage, int statusCode = 400)
     {
         _logger.LogWarning("Erro na requisição: {Message}", errorMessage);
-        return StatusCode(statusCode, new ErrorResponse(false, errorMessage));
+        return StatusCode(statusCode, new ErrorResponse(false, [errorMessage]));
     }
 
-    protected IActionResult ExceptionResponse(Exception ex)
+    protected void ModelStateValidation()
     {
-        return ex switch
+        if (!ModelState.IsValid)
         {
-            NotFoundException => Fail(ex.Message, 404),
-            UnauthorizedException => Fail(ex.Message, 401),
-            InvalidPasswordException => Fail(ex.Message,400),
-            EmailAlreadyExistsException => Fail(ex.Message,400),
-            _ => Fail("Erro interno no servidor.", 500)
-        };
+            var firstError = ModelState
+                .Where(kvp => kvp.Value.Errors.Count > 0)
+                .Select(kvp => new
+                {
+                    Campo = kvp.Key,
+                    Mensagem = kvp.Value.Errors.First().ErrorMessage
+                })
+                .FirstOrDefault();
+
+            throw new InvalidModelStateException($"Campo inválido: {firstError.Campo} - {firstError.Mensagem}");
+        }
     }
 }

@@ -1,11 +1,14 @@
 using QuemVaiVai.Application.Helpers;
+using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Application.Interfaces.Email;
 using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Application.Interfaces.Security;
+using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Application.Services;
 using QuemVaiVai.Domain.Interfaces.Services;
 using QuemVaiVai.Domain.Services;
+using QuemVaiVai.Infrastructure.Contexts;
 using QuemVaiVai.Infrastructure.DapperRepositories;
 using QuemVaiVai.Infrastructure.Email;
 using QuemVaiVai.Infrastructure.Repositories;
@@ -21,11 +24,16 @@ public static class DependencyInjection
         services.AddScoped<IUserAppService, UserAppService>();
         services.AddScoped<IUserService, UserService>();
 
+        services.AddScoped<IEmailConfirmationTokenAppService, EmailConfirmationTokenAppService>();
+        services.AddScoped<IEmailConfirmationTokenService, EmailConfirmationTokenService>();
+
         //Repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IEmailConfirmationTokenRepository, EmailConfirmationTokenRepository>();
 
         //DapperRepositories
         services.AddScoped<IUserDapperRepository, UserDapperRepository>();
+        services.AddScoped<IEmailConfirmationTokenDapperRepository, EmailConfirmationTokenDapperRepository>();
 
         //Security
         services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -34,5 +42,8 @@ public static class DependencyInjection
         //Email
         services.AddScoped<IEmailSender, SmtpEmailSender>();
         services.AddScoped<IEmailTemplateBuilder, EmailTemplateBuilder>();
+
+        //Contexts
+        services.AddScoped<IUserContext, UserContext>();
     }
 }

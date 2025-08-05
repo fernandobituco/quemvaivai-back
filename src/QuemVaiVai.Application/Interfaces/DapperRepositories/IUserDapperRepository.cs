@@ -3,7 +3,7 @@ using QuemVaiVai.Domain.Entities;
 
 namespace QuemVaiVai.Application.Interfaces.DapperRepositories
 {
-    public interface IUserDapperRepository : IDapperRepository<User>
+    public interface IUserDapperRepository
     {
         Task<User> GetById(int id);
 

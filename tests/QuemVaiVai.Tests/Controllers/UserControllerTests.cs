@@ -6,7 +6,7 @@ using Moq;
 using Newtonsoft.Json;
 using QuemVaiVai.Api.Controllers;
 using QuemVaiVai.Application.DTOs;
-using QuemVaiVai.Domain.Interfaces.Services;
+using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Tests.Responses;
 using QuemVaiVai.Tests.Responses.UserResponses;
 
