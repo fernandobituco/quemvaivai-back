@@ -1,7 +1,8 @@
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using QuemVaiVai.Api.Responses;
 using QuemVaiVai.Domain.Exceptions;
+using QuemVaiVai.Domain.Responses;
 
 namespace QuemVaiVai.Api.Controllers;
 
@@ -25,15 +26,14 @@ public abstract class BaseController<T> : ControllerBase
         
         return Guid.Parse(userIdClaim.Value);
     }
-    protected IActionResult Success<TResponse>(TResponse result)
+    protected Result<TResponse> Success<TResponse>(TResponse result)
     {
-        return Ok(new SuccessResponse<TResponse>(true, result ));
+        return Result<TResponse>.Success(result);
     }
 
-    protected IActionResult Fail(string errorMessage, int statusCode = 400)
+    protected Result<TResponse> Fail<TResponse>(string errorMessage, int statusCode = 400)
     {
-        _logger.LogWarning("Erro na requisição: {Message}", errorMessage);
-        return StatusCode(statusCode, new ErrorResponse(false, [errorMessage]));
+        return Result<TResponse>.Failure(errorMessage, statusCode);
     }
 
     protected void ModelStateValidation()

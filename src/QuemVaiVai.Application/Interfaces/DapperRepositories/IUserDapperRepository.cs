@@ -8,6 +8,7 @@ namespace QuemVaiVai.Application.Interfaces.DapperRepositories
         Task<User> GetById(int id);
 
         Task<User> GetByEmail(string email);
+        Task<User> GetSensitiveByEmail(string email);
         Task<bool> ExistsByEmail(string email);
     }
 }

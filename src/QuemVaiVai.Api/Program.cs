@@ -9,9 +9,12 @@ using QuemVaiVai.Infrastructure.Contexts;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<AppSettings>(builder.Configuration);
+
 var frontendUrl = builder.Configuration["FRONT_END_URL"] ?? "http://localhost:3000";
 
 ApiConfiguration.AddApiServices(builder.Services, frontendUrl);
+
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("Jwt"));
 
 EmailConfiguration.AddEmailConfiguration(builder.Services, builder.Configuration);
 

@@ -29,8 +29,13 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE email = @Email";
             var user = await Get(sql, new { Email = email });
 
-            if (user == null)
-                throw new NotFoundException("Usuário");
+            return user;
+        }
+
+        public async Task<User> GetSensitiveByEmail(string email)
+        {
+            var sql = "select id as Id, name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE email = @Email";
+            var user = await Get(sql, new { Email = email });
 
             return user;
         }

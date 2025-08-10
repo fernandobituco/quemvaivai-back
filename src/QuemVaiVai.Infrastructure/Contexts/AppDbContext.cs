@@ -27,6 +27,7 @@ namespace QuemVaiVai.Infrastructure.Contexts
         public DbSet<VoteOption> VoteOptions => Set<VoteOption>();
         public DbSet<TaskItem> TaskItems => Set<TaskItem>();
         public DbSet<TaskList> TaskLists => Set<TaskList>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

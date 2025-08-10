@@ -30,8 +30,9 @@ public static class ApiConfiguration
             options.AddPolicy("AllowFrontend",
                 policy => policy
                     .WithOrigins(frontendUrl.Split(';'))
-                    .WithHeaders("Content-Type")
-                    .WithMethods("GET", "POST"));
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithMethods("GET", "POST", "PUT", "DELETE"));
         });
     }
 

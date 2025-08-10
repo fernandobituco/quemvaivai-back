@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using QuemVaiVai.Api.Responses;
+using QuemVaiVai.Domain.Responses;
 using QuemVaiVai.Domain.Exceptions;
 using System.Text.Json;
 
@@ -33,14 +33,15 @@ public class ErrorHandlingMiddleware
             context.Response.StatusCode = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
-                UnauthorizedException => StatusCodes.Status401Unauthorized,
+                UnauthorizedException => StatusCodes.Status400BadRequest,
+                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
                 InvalidPasswordException => StatusCodes.Status400BadRequest,
                 EmailAlreadyExistsException => StatusCodes.Status400BadRequest,
                 InvalidModelStateException => StatusCodes.Status400BadRequest,
                 _ => StatusCodes.Status500InternalServerError
             };
 
-            var error = new ErrorResponse(false, [ex.Message, ex.StackTrace]);
+            var error = Result<string>.Failure(ex.Message, context.Response.StatusCode);
 
             var json = JsonSerializer.Serialize(error);
             await context.Response.WriteAsync(json);

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using QuemVaiVai.Application.DTOs;
-using QuemVaiVai.Application.Helpers;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Application.Interfaces.Email;
 using QuemVaiVai.Application.Interfaces.Repositories;
@@ -10,6 +9,7 @@ using QuemVaiVai.Domain.Interfaces.Services;
 using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Domain.Exceptions;
 using Microsoft.Extensions.Options;
+using QuemVaiVai.Domain.Responses;
 
 namespace QuemVaiVai.Application.Services
 {
@@ -18,7 +18,7 @@ namespace QuemVaiVai.Application.Services
         private readonly IUserDapperRepository _dapperRepository;
         private readonly IUserService _userService;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly JwtTokenGenerator _jwtGenerator;
+        private readonly ITokenGenerator _tokenGenerator;
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly IEmailTemplateBuilder _emailTemplateBuilder;
@@ -30,7 +30,7 @@ namespace QuemVaiVai.Application.Services
             IUserRepository repository,
             IUserDapperRepository dapperRepository,
             IPasswordHasher passwordHasher,
-            JwtTokenGenerator jwtGenerator,
+            ITokenGenerator tokenGenerator,
             IMapper mapper,
             IUserService userService,
             IEmailSender emailSender,
@@ -41,7 +41,7 @@ namespace QuemVaiVai.Application.Services
         {
             _dapperRepository = dapperRepository;
             _passwordHasher = passwordHasher;
-            _jwtGenerator = jwtGenerator;
+            _tokenGenerator = tokenGenerator;
             _mapper = mapper;
             _userService = userService;
             _emailSender = emailSender;
@@ -77,16 +77,6 @@ namespace QuemVaiVai.Application.Services
                 await _emailSender.SendEmailAsync(request.Email, "AccountConfirmation", body);
             }
             return response;
-        }
-
-        public async Task<string> LoginAsync(UserLoginDTO request)
-        {
-            var user = await _dapperRepository.GetByEmail(request.Email);
-
-            if (_passwordHasher.Verify(request.Password, user.PasswordHash))
-                throw new UnauthorizedException();
-
-            return _jwtGenerator.GenerateToken(user);
         }
 
         private async Task ValidateUserCreationAsync(CreateUserDTO request)

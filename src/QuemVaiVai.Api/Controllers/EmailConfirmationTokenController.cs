@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QuemVaiVai.Api.Responses;
+using QuemVaiVai.Domain.Responses;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Application.Services;
 using QuemVaiVai.Domain.Entities;
@@ -20,10 +20,10 @@ public class EmailConfirmationTokenController : BaseController<EmailConfirmation
     }
 
     [HttpGet("{token}")]
-    [ProducesResponseType(typeof(SuccessResponse<bool>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> AccountConfirmation(string token)
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
+    public async Task<Result<bool>> AccountConfirmation(string token)
     {
         if (string.IsNullOrEmpty(token))
         {
@@ -32,6 +32,6 @@ public class EmailConfirmationTokenController : BaseController<EmailConfirmation
         }
 
         await _appService.ConfirmAccount(token);
-        return Success(new SuccessResponse<EmailConfirmationToken>(true, null));
+        return Result<bool>.Success(true);
     }
 }
