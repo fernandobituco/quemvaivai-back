@@ -22,4 +22,4 @@ COPY --from=build /app .
 EXPOSE 8080
 
 # Comando para rodar a API
-ENTRYPOINT ["dotnet", "QuemVaiVai.Api.csproj"]
+ENTRYPOINT ["dotnet", "QuemVaiVai.Api.dll"]
