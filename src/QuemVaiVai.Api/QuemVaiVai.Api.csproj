@@ -25,4 +25,10 @@
     <Folder Include="Utils\" />
   </ItemGroup>
 
+  <ItemGroup>
+	  <Content Include="Templates\**\*.html">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+  </ItemGroup>
+
 </Project>
