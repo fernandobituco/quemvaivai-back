@@ -28,11 +28,8 @@ namespace QuemVaiVai.Application.Services
 
         public async Task ConfirmAccount(string token)
         {
-            var emailConfirmationToken = await _dapperRepository.GetByToken(token);
-
-            if (emailConfirmationToken == null)
-                throw new NotFoundException("Token");
-
+            var emailConfirmationToken = await _dapperRepository.GetByToken(token) ?? throw new NotFoundException("Token");
+            
             _service.ValidateToken(emailConfirmationToken);
 
             await ConfirmUserAccount(emailConfirmationToken);
@@ -44,7 +41,7 @@ namespace QuemVaiVai.Application.Services
 
         private async Task ConfirmUserAccount(EmailConfirmationToken emailConfirmationToken)
         {
-            var user = await _userRepository.GetByIdAsync(emailConfirmationToken.UserId);
+            var user = await _userRepository.GetByIdAsync(emailConfirmationToken.UserId) ?? throw new NotFoundException("Usuário");
             user.Confirmed = true;
             await _userRepository.UpdateAsync(user);
         }

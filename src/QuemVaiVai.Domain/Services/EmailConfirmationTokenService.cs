@@ -33,7 +33,7 @@ namespace QuemVaiVai.Domain.Services
             }
             if (emailConfirmationToken.Expiration <= DateTime.UtcNow)
             {
-                throw new ExpiredTokenException();
+                throw new InvalidTokenException();
             }
         }
     }

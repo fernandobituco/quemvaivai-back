@@ -60,11 +60,12 @@ namespace QuemVaiVai.Application.Services
 
             user.PasswordHash = _passwordHasher.Hash(request.Password);
 
-            var response = _mapper.Map<UserDTO>(await CreateAsync(user));
+            var userCreated = await CreateAsync(user);
+            var response = new UserDTO();
 
-            if (response != null)
+            if (userCreated != null)
             {
-                var token = _emailConfirmationTokenService.GenerateToken(response.Id);
+                var token = _emailConfirmationTokenService.GenerateToken(userCreated.Id);
                 await _emailConfirmationTokenRepository.AddAsync(token);
                 var url = $"{_appSettings.FRONT_END_URL}/account-confirmation?token={token.Token}";
 
@@ -74,7 +75,14 @@ namespace QuemVaiVai.Application.Services
                     ["ConfirmationUrl"] = url,
                 });
 
-                await _emailSender.SendEmailAsync(request.Email, "AccountConfirmation", body);
+                try
+                {
+                    await _emailSender.SendEmailAsync(request.Email, "AccountConfirmation", body);
+                }
+                finally
+                {
+                    response = _mapper.Map<UserDTO>(userCreated);
+                }
             }
             return response;
         }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Application.Interfaces.Services;
+using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
 
 namespace QuemVaiVai.Api.Controllers;
@@ -31,16 +32,9 @@ public class AuthController : BaseController<AuthController>
     [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status500InternalServerError)]
     public async Task<Result<LoginResponse>> Login([FromBody] UserLoginDTO request)
     {
-        try
-        {
-            var response = await _authService.LoginAsync(request.Email, request.Password);
-            SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return Fail<LoginResponse>("Credenciais inválidas.", 401);
-        }
+        var response = await _authService.LoginAsync(request.Email, request.Password);
+        SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
+        return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
     }
 
     [HttpPost("refresh")]
@@ -48,28 +42,27 @@ public class AuthController : BaseController<AuthController>
     {
         var refreshToken = request ?? GetRefreshTokenFromCookie();
         if (string.IsNullOrEmpty(refreshToken))
-            return Fail<LoginResponse>("Refresh token is required", 401);
+            throw new InvalidTokenException();
 
-        var response = await _authService.RefreshTokenAsync(refreshToken);
-        if (response == null)
-            return Fail<LoginResponse>("Invalid or expired refresh token", 401);
+        var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
 
         SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
+
         return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
     }
 
     [HttpPost("logout")]
     [Authorize]
-    public async Task<IActionResult> Logout([FromBody] string request)
+    public async Task<Result<bool>> Logout()
     {
-        var refreshToken = request ?? GetRefreshTokenFromCookie();
+        var refreshToken = GetRefreshTokenFromCookie();
         if (!string.IsNullOrEmpty(refreshToken))
         {
             await _authService.RevokeTokenAsync(refreshToken);
         }
 
         Response.Cookies.Delete("refreshToken");
-        return Ok(new { message = "Logged out successfully" });
+        return Result<bool>.Success(true);
     }
 
     private void SetRefreshTokenCookie(string refreshToken, DateTime expiry)

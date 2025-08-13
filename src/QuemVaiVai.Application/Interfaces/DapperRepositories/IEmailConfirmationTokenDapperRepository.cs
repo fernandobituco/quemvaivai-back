@@ -9,6 +9,6 @@ namespace QuemVaiVai.Application.Interfaces.DapperRepositories
 {
     public interface IEmailConfirmationTokenDapperRepository
     {
-        Task<EmailConfirmationToken> GetByToken(string token);
+        Task<EmailConfirmationToken?> GetByToken(string token);
     }
 }

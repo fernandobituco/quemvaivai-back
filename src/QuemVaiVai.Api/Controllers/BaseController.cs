@@ -41,15 +41,15 @@ public abstract class BaseController<T> : ControllerBase
         if (!ModelState.IsValid)
         {
             var firstError = ModelState
-                .Where(kvp => kvp.Value.Errors.Count > 0)
+                .Where(kvp => kvp.Value?.Errors.Count > 0)
                 .Select(kvp => new
                 {
                     Campo = kvp.Key,
-                    Mensagem = kvp.Value.Errors.First().ErrorMessage
+                    Mensagem = kvp.Value?.Errors.First().ErrorMessage
                 })
                 .FirstOrDefault();
 
-            throw new InvalidModelStateException($"Campo inválido: {firstError.Campo} - {firstError.Mensagem}");
+            throw new InvalidModelStateException($"Campo inválido: {firstError?.Campo} - {firstError?.Mensagem}");
         }
     }
 }

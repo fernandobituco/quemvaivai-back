@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace QuemVaiVai.Domain.Exceptions
 {
-    public class ExpiredTokenException(string message = "Token expirado") : Exception(message);
+    public class InvalidTokenException(string message = "Invalid or expired refresh token") : Exception(message);
 }

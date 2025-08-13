@@ -24,7 +24,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return exists;
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<User?> GetByEmail(string email)
         {
             var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE email = @Email";
             var user = await Get(sql, new { Email = email });
@@ -32,7 +32,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return user;
         }
 
-        public async Task<User> GetSensitiveByEmail(string email)
+        public async Task<User?> GetSensitiveByEmail(string email)
         {
             var sql = "select id as Id, name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE email = @Email";
             var user = await Get(sql, new { Email = email });
@@ -40,13 +40,10 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return user;
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<User?> GetById(int id)
         {
             var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE id = @Id";
             var user = await Get(sql, new { Id = id });
-
-            if (user == null)
-                throw new NotFoundException("Usuário");
 
             return user;
         }
