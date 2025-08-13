@@ -16,7 +16,7 @@ COPY . .
 RUN dotnet publish -c Release -o /app
 
 # Etapa final (runtime)
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-jammy AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 
 # Instala bibliotecas necessárias para PostgreSQL/Npgsql (libgssapi_krb5.so.2)
