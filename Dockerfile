@@ -2,15 +2,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Copia somente arquivos de projeto e restaura dependências primeiro
-COPY *.sln .
-COPY **/*.csproj ./ 
+# Copia todos os arquivos do projeto
+COPY . .
 
 # Restaura pacotes NuGet
 RUN dotnet restore
-
-# Copia todo o restante do código
-COPY . .
 
 # Publica o projeto em modo Release
 RUN dotnet publish -c Release -o /app
