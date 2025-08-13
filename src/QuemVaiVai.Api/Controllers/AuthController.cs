@@ -65,6 +65,12 @@ public class AuthController : BaseController<AuthController>
         return Result<bool>.Success(true);
     }
 
+    [HttpGet("test")]
+    public ActionResult<bool> Test()
+    {
+        return new ActionResult<bool>(true);
+    }
+
     private void SetRefreshTokenCookie(string refreshToken, DateTime expiry)
     {
         Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
