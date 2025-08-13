@@ -66,6 +66,7 @@ public class AuthController : BaseController<AuthController>
     }
 
     [HttpGet("test")]
+    [HttpHead("test")]
     [AllowAnonymous]
     public ActionResult<bool> Test()
     {
