@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Domain.Entities;
+using QuemVaiVai.Domain.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace QuemVaiVai.Application.Mappings
         public UserProfile()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<CreatedUserResponse, UserDTO>().ReverseMap();
             CreateMap<User, CreateUserDTO>().ReverseMap();
         }
     }
