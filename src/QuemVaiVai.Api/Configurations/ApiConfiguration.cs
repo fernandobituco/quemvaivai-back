@@ -14,9 +14,6 @@ public static class ApiConfiguration
         // Adiciona o IHttpContextAccessor para acessar o contexto HTTP
         services.AddHttpContextAccessor();
 
-        // Configura o AutoMapper para mapear DTOs e entidades
-        //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
         // Configura os controladores da API
         services.AddControllers()
             .AddJsonOptions(options =>
@@ -27,8 +24,6 @@ public static class ApiConfiguration
             {
                 options.SuppressModelStateInvalidFilter = true; //Tratar manualmente erros de modelstate
             });
-
-        Console.WriteLine("frontenturl: " + frontendUrl);
 
         // CORS
         services.AddCors(options =>

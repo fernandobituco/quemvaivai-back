@@ -9,7 +9,6 @@ public static class DatabaseConfiguration
 {
     public static void AddDataBaseConfiguration(this IServiceCollection services, string connectionString)
     {
-        Console.WriteLine("Connection String: " + connectionString);
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseNpgsql(connectionString);
