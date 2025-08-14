@@ -12,8 +12,8 @@ using QuemVaiVai.Infrastructure.Contexts;
 namespace QuemVaiVai.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250730185204_CreateTableEmailConfirmationTokens")]
-    partial class CreateTableEmailConfirmationTokens
+    [Migration("20250814115135_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -64,7 +64,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("event_id");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -106,7 +106,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -124,7 +124,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("token");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -169,7 +169,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -200,7 +200,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("title");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -236,7 +236,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -256,7 +256,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -290,7 +290,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -306,7 +306,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("role");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -325,6 +325,47 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("group_users", (string)null);
+                });
+
+            modelBuilder.Entity("QuemVaiVai.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expiry_date");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_revoked");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text")
+                        .HasColumnName("replaced_by_token");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("token");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.TaskItem", b =>
@@ -354,7 +395,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -374,7 +415,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     b.Property<int>("TaskListId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -412,7 +453,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -429,7 +470,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -469,7 +510,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -494,7 +535,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password_hash");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -528,7 +569,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -544,7 +585,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -586,7 +627,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -594,7 +635,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -640,7 +681,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("deleted");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
@@ -660,7 +701,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("suggested_location");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -725,6 +766,16 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Group");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("QuemVaiVai.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("QuemVaiVai.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
