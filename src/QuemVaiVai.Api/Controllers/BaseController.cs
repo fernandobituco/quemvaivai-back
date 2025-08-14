@@ -52,4 +52,9 @@ public abstract class BaseController<T> : ControllerBase
             throw new InvalidModelStateException($"Campo inválido: {firstError?.Campo} - {firstError?.Mensagem}");
         }
     }
+
+    protected string? GetRefreshTokenFromCookie()
+    {
+        return Request.Cookies["refreshToken"];
+    }
 }

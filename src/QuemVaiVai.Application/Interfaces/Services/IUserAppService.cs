@@ -7,5 +7,7 @@ namespace QuemVaiVai.Application.Interfaces.Services
     public interface IUserAppService : IService<User>
     {
         Task<UserDTO> CreateUserAsync(CreateUserDTO request);
+        Task<UserDTO> UpdateUserAsync(UpdateUserDTO request);
+        Task DeleteUserAsync(int id);
     }
 }

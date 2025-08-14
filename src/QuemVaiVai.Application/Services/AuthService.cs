@@ -62,12 +62,14 @@ namespace QuemVaiVai.Application.Services
             var user = await _userDapperRepository.GetById(storedToken.UserId);
             if (user == null) return null;
 
+            var newToken = await GenerateTokensAsync(user);
+
             // Revogar token usado
-            storedToken.Revoke("Used for refresh");
+            storedToken.Revoke("Used for refresh", newToken.RefreshToken);
             await _refreshTokenRepository.UpdateAsync(storedToken);
 
             // Gerar novos tokens
-            return await GenerateTokensAsync(user);
+            return newToken;
         }
 
         public async Task RevokeTokenAsync(string refreshToken)

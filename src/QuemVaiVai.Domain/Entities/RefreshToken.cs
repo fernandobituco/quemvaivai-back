@@ -21,10 +21,11 @@ namespace QuemVaiVai.Domain.Entities
         public bool IsExpired => DateTime.UtcNow >= ExpiryDate;
         public bool IsActive => !IsRevoked && !IsExpired;
 
-        public void Revoke(string? reason = null)
+        public void Revoke(string? reason = null, string? newToken = null)
         {
             if (IsRevoked) return;
             IsRevoked = true;
+            ReplacedByToken = newToken;
         }
 
         public static RefreshToken Create(string token, int userId, TimeSpan validity)

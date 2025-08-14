@@ -18,7 +18,6 @@ namespace QuemVaiVai.Application.Services
         private readonly IUserDapperRepository _dapperRepository;
         private readonly IUserService _userService;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly ITokenGenerator _tokenGenerator;
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly IEmailTemplateBuilder _emailTemplateBuilder;
@@ -41,7 +40,6 @@ namespace QuemVaiVai.Application.Services
         {
             _dapperRepository = dapperRepository;
             _passwordHasher = passwordHasher;
-            _tokenGenerator = tokenGenerator;
             _mapper = mapper;
             _userService = userService;
             _emailSender = emailSender;
@@ -53,8 +51,11 @@ namespace QuemVaiVai.Application.Services
 
         public async Task<UserDTO> CreateUserAsync(CreateUserDTO request)
         {
+            if (request == null) throw new ArgumentNullException(nameof(request));
             // Validações
-            await ValidateUserCreationAsync(request);
+            await ValidateEmail(request.Email);
+
+            ValidatePassword(request.Password, request.PasswordConfirmation);
 
             User user = _mapper.Map<User>(request);
 
@@ -87,21 +88,41 @@ namespace QuemVaiVai.Application.Services
             return response;
         }
 
-        private async Task ValidateUserCreationAsync(CreateUserDTO request)
+        public async Task<UserDTO> UpdateUserAsync(UpdateUserDTO request)
         {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request));
+            if (request == null) throw new ArgumentNullException(nameof(request));
+            var user = await _dapperRepository.GetCompleteForUpdateById(request.Id) ?? throw new NotFoundException("Usuário");
 
-            if (string.IsNullOrWhiteSpace(request.Email))
-                throw new ArgumentException("Email é obrigatório", nameof(request.Email));
+            // Validações
+            await ValidateEmail(request.Email, request.Id);
 
-            if (!IsValidEmail(request.Email))
-                throw new ArgumentException("Email inválido", nameof(request.Email));
+            user.Name = request.Name;
+            user.Email = request.Email;
 
-            ValidatePasswordMatch(request.Password, request.PasswordConfirmation);
-            _userService.ValidatePassword(request.Password);
-            await ValidateEmailNotExistsAsync(request.Email);
+            await _repository.UpdateAsync(user, request.Id);
+
+            return _mapper.Map<UserDTO>(user);
         }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            await _repository.DeleteAsync(id, id);
+        }
+
+        private async Task ValidateEmail(string email, int? id = null)
+        {
+            if (!IsValidEmail(email))
+                throw new ArgumentException("Email inválido", nameof(email));
+
+            await ValidateEmailNotExistsAsync(email, id);
+        }
+
+        private void ValidatePassword(string password, string passwordConfirfmation)
+        {
+            ValidatePasswordMatch(password, passwordConfirfmation);
+            _userService.ValidatePassword(password);
+        }
+
         private static void ValidatePasswordMatch(string password, string passwordConfirmation)
         {
             if (!password.Equals(passwordConfirmation, StringComparison.Ordinal))
@@ -109,14 +130,27 @@ namespace QuemVaiVai.Application.Services
                 throw new InvalidPasswordException("A confirmação precisa estar igual à senha");
             }
         }
-        private async Task ValidateEmailNotExistsAsync(string email)
+
+        private async Task ValidateEmailNotExistsAsync(string email, int? id = null)
         {
-            var exists = await _dapperRepository.ExistsByEmail(email);
-            if (exists)
+            if (id == null)
             {
-                throw new EmailAlreadyExistsException($"O email {email} já está em uso");
+                var exists = await _dapperRepository.ExistsByEmail(email);
+                if (exists)
+                {
+                    throw new EmailAlreadyExistsException($"O email {email} já está em uso");
+                }
+            }
+            else
+            {
+                var exists = await _dapperRepository.ExistsByEmailDiferentId(email, (int)id);
+                if (exists)
+                {
+                    throw new EmailAlreadyExistsException($"O email {email} já está em uso");
+                }
             }
         }
+
         private static bool IsValidEmail(string email)
         {
             try

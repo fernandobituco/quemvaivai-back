@@ -19,7 +19,7 @@ namespace QuemVaiVai.Tests.Application.Services
             _userAppService = _fixture.CreateService();
         }
 
-        #region CreateUserAsync - Success Tests
+        #region Success Tests
 
         [Fact]
         public async Task CreateUserAsync_WithValidRequest_ShouldCreateUserSuccessfully()
@@ -81,9 +81,35 @@ namespace QuemVaiVai.Tests.Application.Services
             Assert.Equal(expectedUrl, capturedTemplateData["ConfirmationUrl"]);
         }
 
+        [Fact]
+        public async Task UpdateUserAsync_WithValidRequest_ShouldUpdateUserSuccessfully()
+        {
+            // Arrange
+            var request = CreateValidUpdateUserDTO();
+            var expectedUser = CreateValidUser();
+            var expectedUserDTO = CreateValidUserDTO();
+
+            _fixture.MapperMock.Setup(m => m.Map<User>(request)).Returns(expectedUser);
+            _fixture.UserRepoMock.Setup(r => r.AddAsync(It.IsAny<User>(), It.IsAny<int?>())).ReturnsAsync(expectedUser);
+            _fixture.MapperMock.Setup(m => m.Map<UserDTO>(expectedUser)).Returns(expectedUserDTO);
+            _fixture.DapperRepoMock.Setup(d => d.ExistsByEmailDiferentId(request.Email, request.Id)).ReturnsAsync(false);
+            _fixture.DapperRepoMock.Setup(d => d.GetCompleteForUpdateById(request.Id)).ReturnsAsync(expectedUser);
+
+            // Act
+            var result = await _userAppService.UpdateUserAsync(request);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedUserDTO.Id, result.Id);
+            Assert.Equal(expectedUserDTO.Name, result.Name);
+            Assert.Equal(expectedUserDTO.Email, result.Email);
+
+            _fixture.UserRepoMock.Verify(r => r.UpdateAsync(It.IsAny<User>(), It.IsAny<int?>()), Times.AtLeastOnce);
+        }
+
         #endregion
 
-        #region CreateUserAsync - Validation Tests
+        #region Validation Tests
 
         [Fact]
         public async Task CreateUserAsync_WithNullRequest_ShouldThrowArgumentNullException()
@@ -92,10 +118,21 @@ namespace QuemVaiVai.Tests.Application.Services
             await Assert.ThrowsAsync<ArgumentNullException>(() => _userAppService.CreateUserAsync(null));
         }
 
+        [Fact]
+        public async Task UpdateUserAsync_WithNullRequest_ShouldThrowArgumentNullException()
+        {
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _userAppService.UpdateUserAsync(null));
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
+        [InlineData("invalid-email")]
+        [InlineData("@domain.com")]
+        [InlineData("user@")]
+        [InlineData("user.domain.com")]
         public async Task CreateUserAsync_WithInvalidEmail_ShouldThrowArgumentException(string email)
         {
             // Arrange
@@ -104,22 +141,28 @@ namespace QuemVaiVai.Tests.Application.Services
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => _userAppService.CreateUserAsync(request));
-            Assert.Contains("Email é obrigatório", exception.Message);
+            Assert.Contains("Email inválido", exception.Message);
         }
 
         [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
         [InlineData("invalid-email")]
         [InlineData("@domain.com")]
         [InlineData("user@")]
         [InlineData("user.domain.com")]
-        public async Task CreateUserAsync_WithMalformedEmail_ShouldThrowArgumentException(string email)
+        public async Task UpdateUserAsync_WithInvalidEmail_ShouldThrowArgumentException(string email)
         {
             // Arrange
-            var request = CreateValidCreateUserDTO();
+            var request = CreateValidUpdateUserDTO();
+            var expectedUser = CreateValidUser();
             request.Email = email;
 
+            _fixture.DapperRepoMock.Setup(d => d.GetCompleteForUpdateById(request.Id)).ReturnsAsync(expectedUser);
+
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _userAppService.CreateUserAsync(request));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => _userAppService.UpdateUserAsync(request));
             Assert.Contains("Email inválido", exception.Message);
         }
 
@@ -158,6 +201,18 @@ namespace QuemVaiVai.Tests.Application.Services
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<EmailAlreadyExistsException>(() => _userAppService.CreateUserAsync(request));
+            Assert.Contains($"O email {request.Email} já está em uso", exception.Message);
+        }
+
+        [Fact]
+        public async Task UpdateUserAsync_WithExistingEmail_ShouldThrowEmailAlreadyExistsException()
+        {
+            // Arrange
+            var request = CreateValidUpdateUserDTO();
+            _fixture.DapperRepoMock.Setup(d => d.ExistsByEmailDiferentId(request.Email, request.Id)).ReturnsAsync(true);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<EmailAlreadyExistsException>(() => _userAppService.UpdateUserAsync(request));
             Assert.Contains($"O email {request.Email} já está em uso", exception.Message);
         }
 
@@ -248,12 +303,12 @@ namespace QuemVaiVai.Tests.Application.Services
 
             var callOrder = new List<string>();
 
-            _fixture.UserServiceMock.Setup(u => u.ValidatePassword(It.IsAny<string>()))
-                .Callback(() => callOrder.Add("ValidatePassword"));
-
             _fixture.DapperRepoMock.Setup(d => d.ExistsByEmail(It.IsAny<string>()))
                 .Callback(() => callOrder.Add("EmailExists"))
                 .ReturnsAsync(false);
+
+            _fixture.UserServiceMock.Setup(u => u.ValidatePassword(It.IsAny<string>()))
+                .Callback(() => callOrder.Add("ValidatePassword"));
 
             _fixture.PasswordHasherMock.Setup(p => p.Hash(It.IsAny<string>()))
                 .Callback(() => callOrder.Add("HashPassword"))
@@ -268,8 +323,8 @@ namespace QuemVaiVai.Tests.Application.Services
 
             // Assert
             Assert.Equal(4, callOrder.Count);
-            Assert.Equal("ValidatePassword", callOrder[0]);
-            Assert.Equal("EmailExists", callOrder[1]);
+            Assert.Equal("EmailExists", callOrder[0]);
+            Assert.Equal("ValidatePassword", callOrder[1]);
             Assert.Equal("HashPassword", callOrder[2]);
             Assert.Equal("CreateUser", callOrder[3]);
         }
@@ -349,6 +404,16 @@ namespace QuemVaiVai.Tests.Application.Services
             };
         }
 
+        private static UpdateUserDTO CreateValidUpdateUserDTO()
+        {
+            return new UpdateUserDTO
+            {
+                Id = 1,
+                Name = "Test User",
+                Email = "test@example.com",
+            };
+        }
+
         private static User CreateValidUser()
         {
             return new User
@@ -392,6 +457,14 @@ namespace QuemVaiVai.Tests.Application.Services
             _fixture.EmailTokenServiceMock.Setup(e => e.GenerateToken(userDTO.Id)).Returns(token);
             _fixture.EmailTemplateBuilderMock.Setup(e => e.BuildTemplateAsync("AccountConfirmation", It.IsAny<Dictionary<string, string>>()))
                 .ReturnsAsync("template body");
+        }
+
+        private void SetupSuccessfulUserUpdate(UpdateUserDTO request, User user, UserDTO userDTO)
+        {
+            _fixture.MapperMock.Setup(m => m.Map<User>(request)).Returns(user);
+            _fixture.UserRepoMock.Setup(r => r.UpdateAsync(It.IsAny<User>(), It.IsAny<int?>())).Returns(Task.CompletedTask);
+            _fixture.MapperMock.Setup(m => m.Map<UserDTO>(user)).Returns(userDTO);
+            _fixture.DapperRepoMock.Setup(d => d.ExistsByEmailDiferentId(request.Email, request.Id)).ReturnsAsync(false);
         }
 
         #endregion

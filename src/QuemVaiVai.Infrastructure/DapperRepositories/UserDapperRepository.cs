@@ -24,6 +24,14 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return exists;
         }
 
+        public async Task<bool> ExistsByEmailDiferentId(string email, int id)
+        {
+            var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE email = @Email AND id <> @Id);";
+            var exists = await Get<bool>(sql, new { Email = email, Id = id });
+
+            return exists;
+        }
+
         public async Task<User?> GetByEmail(string email)
         {
             var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE email = @Email";
@@ -43,6 +51,14 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         public async Task<User?> GetById(int id)
         {
             var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE id = @Id";
+            var user = await Get(sql, new { Id = id });
+
+            return user;
+        }
+
+        public async Task<User?> GetCompleteForUpdateById(int id)
+        {
+            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE id = @Id";
             var user = await Get(sql, new { Id = id });
 
             return user;

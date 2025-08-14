@@ -41,4 +41,17 @@ namespace QuemVaiVai.Application.DTOs
         public DateTime UpdatedAt { get; set; }
         public bool Deleted { get; set; }
     }
+    public class UpdateUserDTO
+    {
+        [Required]
+        public int Id { get; set; }
+
+        [Required]
+        [MinLength(3)]
+        public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+    }
 }

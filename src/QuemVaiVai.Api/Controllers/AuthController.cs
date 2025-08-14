@@ -51,6 +51,18 @@ public class AuthController : BaseController<AuthController>
         return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
     }
 
+    [HttpPost("force-refresh")]
+    public async Task<Result<LoginResponse>> ForceRefreshToken()
+    {
+        var refreshToken = GetRefreshTokenFromCookie();
+        if (string.IsNullOrEmpty(refreshToken))
+            throw new InvalidTokenException();
+
+        var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
+        SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
+        return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+    }
+
     [HttpPost("logout")]
     [Authorize]
     public async Task<Result<bool>> Logout()
@@ -83,10 +95,5 @@ public class AuthController : BaseController<AuthController>
             Expires = expiry,
             Path = "/",
         });
-    }
-
-    private string? GetRefreshTokenFromCookie()
-    {
-        return Request.Cookies["refreshToken"];
     }
 }

@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Application.Interfaces.Services;
+using QuemVaiVai.Application.Services;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,14 +18,17 @@ public class UserController : BaseController<UserController>
 {
     private readonly IUserAppService _userAppService;
     private readonly IMapper _mapper;
+    private readonly IAuthService _authService;
     public UserController(
         IHttpContextAccessor httpContextAccessor,
         ILogger<UserController> logger,
         IUserAppService userAppService,
-        IMapper mapper) : base(httpContextAccessor, logger)
+        IMapper mapper,
+        IAuthService authService) : base(httpContextAccessor, logger)
     {
         _userAppService = userAppService;
         _mapper = mapper;
+        _authService = authService;
     }
 
     [HttpPost]
@@ -59,5 +63,55 @@ public class UserController : BaseController<UserController>
 
         UserResponse response = new(userIdInt, userName, userEmail);
         return Result<UserResponse>.Success(response);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status500InternalServerError)]
+    public async Task<Result<CreatedUserResponse>> UpdateUser([FromBody] UpdateUserDTO dto)
+    {
+        ModelStateValidation();
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int userIdInt))
+            throw new UnauthorizedException("Invalid user ID in token.");
+
+        if (userIdInt != dto.Id)
+        {
+            throw new UnauthorizedException("Um usuário só pode alterar a própria conta");
+        }
+
+        var createdUser = await _userAppService.UpdateUserAsync(dto);
+        var response = _mapper.Map<CreatedUserResponse>(createdUser);
+        return Result<CreatedUserResponse>.Success(response);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status500InternalServerError)]
+    public async Task<Result<bool>> DeleteUser(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int userIdInt))
+            throw new UnauthorizedException("Invalid user ID in token.");
+
+        if (userIdInt != id)
+        {
+            throw new UnauthorizedException("Um usuário só pode alterar a própria conta");
+        }
+
+        await _userAppService.DeleteUserAsync(id);
+
+        var refreshToken = GetRefreshTokenFromCookie();
+        if (!string.IsNullOrEmpty(refreshToken))
+        {
+            await _authService.RevokeTokenAsync(refreshToken);
+        }
+
+        Response.Cookies.Delete("refreshToken");
+
+        return Result<bool>.Success(true);
     }
 }
