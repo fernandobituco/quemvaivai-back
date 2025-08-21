@@ -13,19 +13,16 @@ namespace QuemVaiVai.Application.Services
         private readonly IEmailConfirmationTokenDapperRepository _dapperRepository;
         private readonly IEmailConfirmationTokenService _service;
         private readonly IUserRepository _userRepository;
-        private readonly IUserDapperRepository _userDapperRepository;
         public EmailConfirmationTokenAppService(
             IEmailConfirmationTokenRepository repository,
             IMapper mapper,
             IEmailConfirmationTokenDapperRepository dapperRepository,
             IUserRepository userRepository,
-            IEmailConfirmationTokenService service,
-            IUserDapperRepository userDapperRepository) : base(repository, mapper)
+            IEmailConfirmationTokenService service) : base(repository, mapper)
         {
             _dapperRepository = dapperRepository;
             _userRepository = userRepository;
             _service = service;
-            _userDapperRepository = userDapperRepository;
         }
 
         public async Task ConfirmAccount(string token)

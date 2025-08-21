@@ -89,11 +89,7 @@ namespace QuemVaiVai.Tests.Application.Services
             var expectedUser = CreateValidUser();
             var expectedUserDTO = CreateValidUserDTO();
 
-            _fixture.MapperMock.Setup(m => m.Map<User>(request)).Returns(expectedUser);
-            _fixture.UserRepoMock.Setup(r => r.AddAsync(It.IsAny<User>(), It.IsAny<int?>())).ReturnsAsync(expectedUser);
-            _fixture.MapperMock.Setup(m => m.Map<UserDTO>(expectedUser)).Returns(expectedUserDTO);
-            _fixture.DapperRepoMock.Setup(d => d.ExistsByEmailDiferentId(request.Email, request.Id)).ReturnsAsync(false);
-            _fixture.DapperRepoMock.Setup(d => d.GetCompleteForUpdateById(request.Id)).ReturnsAsync(expectedUser);
+            SetupSuccessfulUserUpdate(request, expectedUser, expectedUserDTO);
 
             // Act
             var result = await _userAppService.UpdateUserAsync(request);
@@ -465,6 +461,7 @@ namespace QuemVaiVai.Tests.Application.Services
             _fixture.UserRepoMock.Setup(r => r.UpdateAsync(It.IsAny<User>(), It.IsAny<int?>())).Returns(Task.CompletedTask);
             _fixture.MapperMock.Setup(m => m.Map<UserDTO>(user)).Returns(userDTO);
             _fixture.DapperRepoMock.Setup(d => d.ExistsByEmailDiferentId(request.Email, request.Id)).ReturnsAsync(false);
+            _fixture.DapperRepoMock.Setup(d => d.GetCompleteForUpdateById(request.Id)).ReturnsAsync(user);
         }
 
         #endregion

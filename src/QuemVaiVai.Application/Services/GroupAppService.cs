@@ -15,7 +15,12 @@ namespace QuemVaiVai.Application.Services
         private readonly IGroupDapperRepository _groupDapperRepository;
         private readonly IGroupUserRepository _groupUserRepository;
         private readonly IGroupUserDapperRepository _groupUserDapperRepository;
-        public GroupAppService(IGroupRepository repository, IMapper mapper, IGroupUserRepository groupUserRepository, IGroupUserDapperRepository groupUserDapperRepository, IGroupDapperRepository groupDapperRepository) : base(repository, mapper)
+        public GroupAppService(
+            IGroupRepository repository,
+            IMapper mapper,
+            IGroupUserRepository groupUserRepository,
+            IGroupUserDapperRepository groupUserDapperRepository,
+            IGroupDapperRepository groupDapperRepository) : base(repository, mapper)
         {
             _groupUserRepository = groupUserRepository;
             _groupUserDapperRepository = groupUserDapperRepository;

@@ -11,22 +11,21 @@ using System.Threading.Tasks;
 
 namespace QuemVaiVai.Tests.Fixtures.Application
 {
-    public class EmailConfirmationTokenAppServiceFixture
+    public class EmailConfirmationTokenAppServiceFixture : ApplicationFixtureBase
     {
         public Mock<IEmailConfirmationTokenRepository> TokenRepoMock { get; } = new();
         public Mock<IEmailConfirmationTokenDapperRepository> TokenDapperRepoMock { get; } = new();
         public Mock<IUserRepository> UserRepoMock { get; } = new();
         public Mock<IEmailConfirmationTokenService> TokenServiceMock { get; } = new();
-        public Mock<IUserDapperRepository> UserDapperRepoMock { get; } = new();
 
         public EmailConfirmationTokenAppService CreateService()
         {
             return new EmailConfirmationTokenAppService(
                 TokenRepoMock.Object,
+                MapperMock.Object,
                 TokenDapperRepoMock.Object,
                 UserRepoMock.Object,
-                TokenServiceMock.Object,
-                UserDapperRepoMock.Object
+                TokenServiceMock.Object
             );
         }
 
@@ -39,7 +38,6 @@ namespace QuemVaiVai.Tests.Fixtures.Application
             TokenDapperRepoMock.Reset();
             UserRepoMock.Reset();
             TokenServiceMock.Reset();
-            UserDapperRepoMock.Reset();
         }
     }
 }
