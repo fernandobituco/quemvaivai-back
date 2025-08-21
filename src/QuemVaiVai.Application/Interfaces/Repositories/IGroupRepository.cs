@@ -2,7 +2,7 @@
 
 namespace QuemVaiVai.Application.Interfaces.Repositories
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IGroupRepository : IRepository<Group>
     {
     }
 }

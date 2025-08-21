@@ -1,3 +1,3 @@
 namespace QuemVaiVai.Domain.Responses;
 
-public record CreatedUserResponse(int Id, string Name, string Email, DateTime CreatedAt);
+public record CreatedUserResponse(int Id, string Name, string Email);

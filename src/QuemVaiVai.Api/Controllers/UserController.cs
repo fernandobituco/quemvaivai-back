@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Application.Services;
+using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,17 +18,15 @@ namespace QuemVaiVai.Api.Controllers;
 public class UserController : BaseController<UserController>
 {
     private readonly IUserAppService _userAppService;
-    private readonly IMapper _mapper;
     private readonly IAuthService _authService;
     public UserController(
         IHttpContextAccessor httpContextAccessor,
         ILogger<UserController> logger,
         IUserAppService userAppService,
         IMapper mapper,
-        IAuthService authService) : base(httpContextAccessor, logger)
+        IAuthService authService) : base(httpContextAccessor, logger, mapper)
     {
         _userAppService = userAppService;
-        _mapper = mapper;
         _authService = authService;
     }
 
@@ -40,7 +39,7 @@ public class UserController : BaseController<UserController>
         ModelStateValidation();
 
         var createdUser = await _userAppService.CreateUserAsync(dto);
-        var response = _mapper.Map<CreatedUserResponse>(createdUser);
+        CreatedUserResponse response = new(createdUser.Id, createdUser.Name, createdUser.Email);
         return Result<CreatedUserResponse>.Success(response);
     }
 
@@ -66,9 +65,9 @@ public class UserController : BaseController<UserController>
     }
 
     [HttpPut]
-    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(Result<CreatedUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<CreatedUserResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<CreatedUserResponse>), StatusCodes.Status500InternalServerError)]
     public async Task<Result<CreatedUserResponse>> UpdateUser([FromBody] UpdateUserDTO dto)
     {
         ModelStateValidation();
@@ -82,15 +81,15 @@ public class UserController : BaseController<UserController>
             throw new UnauthorizedException("Um usuário só pode alterar a própria conta");
         }
 
-        var createdUser = await _userAppService.UpdateUserAsync(dto);
-        var response = _mapper.Map<CreatedUserResponse>(createdUser);
+        var user = await _userAppService.UpdateUserAsync(dto);
+        CreatedUserResponse response = new(user.Id, user.Name, user.Email);
         return Result<CreatedUserResponse>.Success(response);
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(Result<UserResponse>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
     public async Task<Result<bool>> DeleteUser(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

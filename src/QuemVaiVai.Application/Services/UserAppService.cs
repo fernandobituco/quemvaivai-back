@@ -18,7 +18,6 @@ namespace QuemVaiVai.Application.Services
         private readonly IUserDapperRepository _dapperRepository;
         private readonly IUserService _userService;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly IEmailTemplateBuilder _emailTemplateBuilder;
         private readonly IEmailConfirmationTokenService _emailConfirmationTokenService;
@@ -36,11 +35,10 @@ namespace QuemVaiVai.Application.Services
             IEmailTemplateBuilder emailTemplateBuilder,
             IEmailConfirmationTokenService emailConfirmationTokenService,
             IEmailConfirmationTokenRepository emailConfirmationTokenRepository,
-            IOptions<AppSettings> appSettings) : base(repository)
+            IOptions<AppSettings> appSettings) : base(repository, mapper)
         {
             _dapperRepository = dapperRepository;
             _passwordHasher = passwordHasher;
-            _mapper = mapper;
             _userService = userService;
             _emailSender = emailSender;
             _emailTemplateBuilder = emailTemplateBuilder;
@@ -91,6 +89,7 @@ namespace QuemVaiVai.Application.Services
         public async Task<UserDTO> UpdateUserAsync(UpdateUserDTO request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
+
             var user = await _dapperRepository.GetCompleteForUpdateById(request.Id) ?? throw new NotFoundException("Usuário");
 
             // Validações

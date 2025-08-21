@@ -16,7 +16,7 @@ namespace QuemVaiVai.Domain.Entities
         public int GroupId { get; set; }
         public Group Group { get; set; } = null!;
 
-        public ICollection<Comment> Comments { get; set; }
-        public ICollection<UserEvent> UserEvents { get; set; }
+        public ICollection<Comment> Comments { get; set; } = [];
+        public ICollection<UserEvent> UserEvents { get; set; } = [];
     }
 }

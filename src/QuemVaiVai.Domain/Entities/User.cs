@@ -13,10 +13,10 @@ namespace QuemVaiVai.Domain.Entities
         public string PasswordHash { get; set; } = null!;
         public bool Confirmed { get; set; } = false;
 
-        public ICollection<GroupUser> GroupUsers { get; set; }
-        public ICollection<UserEvent> UserEvents { get; set; }
-        public ICollection<Comment> Comments { get; set; }
-        public ICollection<TaskItem> TaskItems { get; set; }
-        public ICollection<Vote> Votes { get; set; }
+        public ICollection<GroupUser> GroupUsers { get; set; } = [];
+        public ICollection<UserEvent> UserEvents { get; set; } = [];
+        public ICollection<Comment> Comments { get; set; } = [];
+        public ICollection<TaskItem> TaskItems { get; set; } = [];
+        public ICollection<Vote> Votes { get; set; } = [];
     }
 }

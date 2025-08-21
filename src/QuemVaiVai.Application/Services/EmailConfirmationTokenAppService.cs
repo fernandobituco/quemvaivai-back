@@ -1,4 +1,5 @@
-﻿using QuemVaiVai.Application.Interfaces.DapperRepositories;
+﻿using AutoMapper;
+using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Domain.Entities;
@@ -15,10 +16,11 @@ namespace QuemVaiVai.Application.Services
         private readonly IUserDapperRepository _userDapperRepository;
         public EmailConfirmationTokenAppService(
             IEmailConfirmationTokenRepository repository,
+            IMapper mapper,
             IEmailConfirmationTokenDapperRepository dapperRepository,
             IUserRepository userRepository,
             IEmailConfirmationTokenService service,
-            IUserDapperRepository userDapperRepository) : base(repository)
+            IUserDapperRepository userDapperRepository) : base(repository, mapper)
         {
             _dapperRepository = dapperRepository;
             _userRepository = userRepository;

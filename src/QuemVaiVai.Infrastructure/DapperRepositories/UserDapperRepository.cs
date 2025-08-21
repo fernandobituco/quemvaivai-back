@@ -18,7 +18,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<bool> ExistsByEmail(string email)
         {
-            var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE email = @Email );";
+            var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE email = @Email and deleted = false);";
             var exists = await Get<bool>(sql, new { Email = email });
 
             return exists;
@@ -26,7 +26,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<bool> ExistsByEmailDiferentId(string email, int id)
         {
-            var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE email = @Email AND id <> @Id);";
+            var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE email = @Email AND id <> @Id AND deleted = false);";
             var exists = await Get<bool>(sql, new { Email = email, Id = id });
 
             return exists;
@@ -34,7 +34,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<User?> GetByEmail(string email)
         {
-            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE email = @Email";
+            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE email = @Email and deleted = false";
             var user = await Get(sql, new { Email = email });
 
             return user;
@@ -42,7 +42,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<User?> GetSensitiveByEmail(string email)
         {
-            var sql = "select id as Id, name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE email = @Email";
+            var sql = "select id as Id, name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE email = @Email and deleted = false";
             var user = await Get(sql, new { Email = email });
 
             return user;
@@ -50,7 +50,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<User?> GetById(int id)
         {
-            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE id = @Id";
+            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed FROM {table} WHERE id = @Id and deleted = false";
             var user = await Get(sql, new { Id = id });
 
             return user;
@@ -58,7 +58,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<User?> GetCompleteForUpdateById(int id)
         {
-            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE id = @Id";
+            var sql = GetBaseEntityValues + ", name as Name, email as Email, confirmed as Confirmed, password_hash as PasswordHash FROM {table} WHERE id = @Id and deleted = false";
             var user = await Get(sql, new { Id = id });
 
             return user;

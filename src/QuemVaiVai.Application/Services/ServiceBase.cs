@@ -1,16 +1,19 @@
 ﻿using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Application.Interfaces.Services;
+using AutoMapper;
 
 namespace QuemVaiVai.Application.Services
 {
     public class ServiceBase<T> : IService<T> where T : BaseEntity
     {
         protected readonly IRepository<T> _repository;
+        protected readonly IMapper _mapper;
 
-        public ServiceBase(IRepository<T> repository)
+        public ServiceBase(IRepository<T> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public virtual async Task<T?> GetByIdAsync(int id)

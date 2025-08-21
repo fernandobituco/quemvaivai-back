@@ -3,6 +3,7 @@ using QuemVaiVai.Domain.Responses;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Application.Services;
 using QuemVaiVai.Domain.Entities;
+using AutoMapper;
 
 namespace QuemVaiVai.Api.Controllers;
 
@@ -14,7 +15,8 @@ public class EmailConfirmationTokenController : BaseController<EmailConfirmation
     public EmailConfirmationTokenController(
         IHttpContextAccessor httpContextAccessor,
         ILogger<EmailConfirmationToken> logger,
-        IEmailConfirmationTokenAppService appService) : base(httpContextAccessor, logger)
+        IMapper mapper,
+        IEmailConfirmationTokenAppService appService) : base(httpContextAccessor, logger, mapper)
     {
         _appService = appService;
     }

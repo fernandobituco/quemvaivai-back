@@ -8,7 +8,7 @@ namespace QuemVaiVai.Domain.Entities
 {
     public class AppSettings
     {
-        public string FRONT_END_URL { get; set; }
-        public string ASPNETCORE_ENVIRONMENT { get; set; }
+        public string FRONT_END_URL { get; set; } = string.Empty;
+        public string ASPNETCORE_ENVIRONMENT { get; set; } = string.Empty;
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,10 +11,12 @@ public abstract class BaseController<T> : ControllerBase
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     protected readonly ILogger<T> _logger;
-    protected BaseController(IHttpContextAccessor httpContextAccessor, ILogger<T> logger)
+    protected readonly IMapper _mapper;
+    protected BaseController(IHttpContextAccessor httpContextAccessor, ILogger<T> logger, IMapper mapper)
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
+        _mapper = mapper;
     }
 
     protected Guid GetCurrentUserId()

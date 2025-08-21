@@ -14,6 +14,6 @@ namespace QuemVaiVai.Domain.Entities
         public DateTime? SuggestedDate { get; set; }
         public string? SuggestedLocation { get; set; }
 
-        public ICollection<Vote> Votes { get; set; }
+        public ICollection<Vote> Votes { get; set; } = [];
     }
 }

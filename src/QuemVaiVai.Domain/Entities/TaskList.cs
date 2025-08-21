@@ -13,6 +13,6 @@ namespace QuemVaiVai.Domain.Entities
 
         public string Title { get; set; } = null!;
 
-        public ICollection<TaskItem> TaskItems { get; set; }
+        public ICollection<TaskItem> TaskItems { get; set; } = [];
     }
 }

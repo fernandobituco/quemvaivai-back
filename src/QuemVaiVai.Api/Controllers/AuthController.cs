@@ -14,16 +14,14 @@ namespace QuemVaiVai.Api.Controllers;
 public class AuthController : BaseController<AuthController>
 {
     private readonly IAuthService _authService;
-    private readonly IMapper _mapper;
 
     public AuthController(
         IHttpContextAccessor httpContextAccessor,
         ILogger<AuthController> logger,
         IAuthService authService,
-        IMapper mapper) : base(httpContextAccessor, logger)
+        IMapper mapper) : base(httpContextAccessor, logger, mapper)
     {
         _authService = authService;
-        _mapper = mapper;
     }
 
     [HttpPost("login")]
