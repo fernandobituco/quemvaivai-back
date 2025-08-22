@@ -2,6 +2,7 @@ using AutoMapper;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
 
@@ -12,11 +13,17 @@ public abstract class BaseController<T> : ControllerBase
     private readonly IHttpContextAccessor _httpContextAccessor;
     protected readonly ILogger<T> _logger;
     protected readonly IMapper _mapper;
-    protected BaseController(IHttpContextAccessor httpContextAccessor, ILogger<T> logger, IMapper mapper)
+    protected readonly IUserContext _userContext;
+    protected BaseController(
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<T> logger,
+        IMapper mapper,
+        IUserContext userContext)
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
         _mapper = mapper;
+        _userContext = userContext;
     }
 
     protected Guid GetCurrentUserId()

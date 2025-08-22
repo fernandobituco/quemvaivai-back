@@ -3,6 +3,7 @@ using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Application.DTOs;
+using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
@@ -19,7 +20,8 @@ public class AuthController : BaseController<AuthController>
         IHttpContextAccessor httpContextAccessor,
         ILogger<AuthController> logger,
         IAuthService authService,
-        IMapper mapper) : base(httpContextAccessor, logger, mapper)
+        IMapper mapper,
+        IUserContext userContext) : base(httpContextAccessor, logger, mapper, userContext)
     {
         _authService = authService;
     }

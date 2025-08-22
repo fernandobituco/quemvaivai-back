@@ -36,9 +36,15 @@ namespace QuemVaiVai.Application.DTOs
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public Guid InviteCode { get; set; }
         public int MemberCount { get; set; }
         public int EventCount { get; set; }
         public DateTime NextEvent { get; set; }
         public bool CanEdit { get; set; }
+    }
+
+    public class JoinGroupDTO
+    {
+        public Guid InviteCode { get; set; }
     }
 }

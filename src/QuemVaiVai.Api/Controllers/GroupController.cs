@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Application.DTOs;
+using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Application.Services;
@@ -12,18 +13,19 @@ namespace QuemVaiVai.Api.Controllers;
 
 [Route("api/groups")]
 [ApiController]
-public class GroupController : BaseController<UserController>
+public class GroupController : BaseController<GroupController>
 {
     private readonly IGroupAppService _groupAppService;
     private readonly IGroupDapperRepository _dapperRepository;
     private readonly IGroupUserDapperRepository _groupUserDapperRepository;
     public GroupController(
         IHttpContextAccessor httpContextAccessor,
-        ILogger<UserController> logger,
+        ILogger<GroupController> logger,
         IMapper mapper,
+        IUserContext userContext,
         IGroupAppService groupAppService,
         IGroupDapperRepository dapperRepository,
-        IGroupUserDapperRepository groupUserDapperRepository) : base(httpContextAccessor, logger, mapper)
+        IGroupUserDapperRepository groupUserDapperRepository) : base(httpContextAccessor, logger, mapper, userContext)
     {
         _groupAppService = groupAppService;
         _dapperRepository = dapperRepository;

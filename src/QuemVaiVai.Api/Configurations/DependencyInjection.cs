@@ -22,11 +22,13 @@ public static class DependencyInjection
         // Services
         services.AddScoped<IUserAppService, UserAppService>();
         services.AddScoped<IUserService, UserService>();
-
-        services.AddScoped<IEmailConfirmationTokenAppService, EmailConfirmationTokenAppService>();
-        services.AddScoped<IEmailConfirmationTokenService, EmailConfirmationTokenService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEmailConfirmationTokenService, EmailConfirmationTokenService>();
+
+        // AppServices
+        services.AddScoped<IEmailConfirmationTokenAppService, EmailConfirmationTokenAppService>();
         services.AddScoped<IGroupAppService, GroupAppService>();
+        services.AddScoped<IGroupUserAppService, GroupUserAppService>();
 
         //Repositories
         services.AddScoped<IUserRepository, UserRepository>();

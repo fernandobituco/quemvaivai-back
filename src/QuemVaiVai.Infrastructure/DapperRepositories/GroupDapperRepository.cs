@@ -2,12 +2,7 @@
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Infrastructure.Contexts;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuemVaiVai.Infrastructure.DapperRepositories
 {
@@ -19,7 +14,8 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<List<GroupCardDTO>> GetAllByUserId(int userId)
         {
-            var sql = @"select g.id as Id, g.name as Name, g.description as Description, COUNT(DISTINCT e.id) AS EventCount, COUNT(DISTINCT gu_all.user_id) AS MemberCount, 
+            var sql = @"select g.id as Id, g.name as Name, g.description as Description, g.invite_code as InviteCode, 
+                COUNT(DISTINCT e.id) AS EventCount, COUNT(DISTINCT gu_all.user_id) AS MemberCount, 
                 case 
                     when g2.role IN (1, 2) then true 
                     else false 
@@ -41,6 +37,14 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             var group = await Get(sql, new { Id = id });
 
             return group;
+        }
+
+        public async Task<int?> GetIdByInviteCode(Guid inviteCode)
+        {
+            var sql = "SELECT id from {table} where invite_code = @InviteCode and deleted = false;";
+            var id = await Get<int>(sql, new { InviteCode = inviteCode });
+
+            return id;
         }
     }
 }

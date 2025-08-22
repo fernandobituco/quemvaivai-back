@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuemVaiVai.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuemVaiVai.Application.DTOs
 {
@@ -53,5 +54,12 @@ namespace QuemVaiVai.Application.DTOs
         [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
+    }
+
+    public class UserMemberDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public Role Role{ get; set; }
     }
 }

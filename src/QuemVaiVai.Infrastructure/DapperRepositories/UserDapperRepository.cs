@@ -5,6 +5,7 @@ using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Infrastructure.Contexts;
 using System.Data;
+using QuemVaiVai.Application.DTOs;
 
 namespace QuemVaiVai.Infrastructure.DapperRepositories
 {
@@ -62,6 +63,14 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             var user = await Get(sql, new { Id = id });
 
             return user;
+        }
+
+        public async Task<IEnumerable<UserMemberDTO>> GetAllByGroupId(int groupId)
+        {
+            var sql = "select u.id as Id, u.name as Name, gu.role as Role FROM {table} u inner join group_users gu on u.id = gu.user_id and gu.deleted = false where gu.group_id = @GroupId and u.deleted = false";
+            var users = await GetAll<UserMemberDTO>(sql, new { GroupId = groupId });
+
+            return users;
         }
     }
 }
