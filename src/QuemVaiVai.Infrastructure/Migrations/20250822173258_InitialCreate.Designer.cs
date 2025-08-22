@@ -12,8 +12,8 @@ using QuemVaiVai.Infrastructure.Contexts;
 namespace QuemVaiVai.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250822105727_AddInviteCodeColumnToGroup")]
-    partial class AddInviteCodeColumnToGroup
+    [Migration("20250822173258_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -68,7 +68,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -110,7 +110,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -128,7 +128,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -173,7 +173,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -204,7 +204,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -240,7 +240,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -264,7 +264,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -298,7 +298,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -314,7 +314,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -403,7 +403,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -423,7 +423,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -461,7 +461,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -478,7 +478,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -518,7 +518,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -543,7 +543,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -565,7 +565,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -577,7 +577,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -593,7 +593,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -635,7 +635,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -643,7 +643,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 
@@ -689,7 +689,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<int>("DeletedUser")
+                    b.Property<int?>("DeletedUser")
                         .HasColumnType("integer")
                         .HasColumnName("deleted_user");
 
@@ -709,7 +709,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UpdatedUser")
+                    b.Property<int?>("UpdatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("updated_user");
 

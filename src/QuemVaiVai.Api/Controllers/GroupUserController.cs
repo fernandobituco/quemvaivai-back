@@ -31,7 +31,7 @@ public class GroupUserController : BaseController<GroupUserController>
     [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
     public async Task<Result<bool>> JoinGroup([FromBody] JoinGroupDTO dto)
     {
-        ModelStateValidation();
+            ModelStateValidation();
 
         var userId = _userContext.GetCurrentUserId();
 

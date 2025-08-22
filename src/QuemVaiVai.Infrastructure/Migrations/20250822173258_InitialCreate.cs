@@ -20,12 +20,13 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    invite_code = table.Column<Guid>(type: "uuid", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -44,11 +45,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     password_hash = table.Column<string>(type: "text", nullable: false),
                     confirmed = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -68,11 +69,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     event_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     group_id = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -96,11 +97,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     expiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     used = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -123,11 +124,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     role = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -178,11 +179,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     content = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -209,11 +210,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     event_id = table.Column<int>(type: "integer", nullable: false),
                     title = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -236,11 +237,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -268,11 +269,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     suggested_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     suggested_location = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -297,11 +298,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     AssignedUserId = table.Column<int>(type: "integer", nullable: true),
                     is_done = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -328,11 +329,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     vote_option_id = table.Column<int>(type: "integer", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    created_user = table.Column<int>(type: "integer", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    updated_user = table.Column<int>(type: "integer", nullable: false),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    deleted_user = table.Column<int>(type: "integer", nullable: false),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
                     deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
