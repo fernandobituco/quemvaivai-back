@@ -20,7 +20,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
             //BaseEntity properties
             builder.Property(vo => vo.Id).HasColumnName("id").IsRequired();
             builder.Property(vo => vo.CreatedAt).HasColumnName("created_at").IsRequired();
-            builder.Property(vo => vo.CreatedUser).HasColumnName("created_user").IsRequired();
+            builder.Property(vo => vo.CreatedUser).HasColumnName("created_user");
             builder.Property(vo => vo.UpdatedAt).HasColumnName("updated_at");
             builder.Property(vo => vo.UpdatedUser).HasColumnName("updated_user");
             builder.Property(vo => vo.DeletedAt).HasColumnName("deleted_at");

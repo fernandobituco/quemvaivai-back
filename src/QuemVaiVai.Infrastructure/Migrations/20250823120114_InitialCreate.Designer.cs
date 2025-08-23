@@ -12,7 +12,7 @@ using QuemVaiVai.Infrastructure.Contexts;
 namespace QuemVaiVai.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250822173258_InitialCreate")]
+    [Migration("20250823120114_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,7 +44,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -98,7 +98,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -161,7 +161,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -228,7 +228,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -286,7 +286,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -391,7 +391,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -449,7 +449,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -506,7 +506,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -623,7 +623,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
@@ -677,7 +677,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("CreatedUser")
+                    b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
 
