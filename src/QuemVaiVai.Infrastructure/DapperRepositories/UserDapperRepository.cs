@@ -67,7 +67,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
         public async Task<IEnumerable<UserMemberDTO>> GetAllByGroupId(int groupId)
         {
-            var sql = "select u.id as Id, u.name as Name, gu.role as Role FROM {table} u inner join group_users gu on u.id = gu.user_id and gu.deleted = false where gu.group_id = @GroupId and u.deleted = false";
+            var sql = "select u.id as Id, u.name as Name, gu.role as Role FROM {table} u inner join tb_group_users gu on u.id = gu.user_id and gu.deleted = false where gu.group_id = @GroupId and u.deleted = false";
             var users = await GetAll<UserMemberDTO>(sql, new { GroupId = groupId });
 
             return users;

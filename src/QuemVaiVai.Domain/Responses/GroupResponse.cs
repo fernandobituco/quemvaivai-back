@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace QuemVaiVai.Domain.Responses
 {
-    public record GroupResponse(int Id, string Name, string? Description);
+    public record GroupResponse(int Id, string Name, string? Description, Guid? InviteCode = null);
 }

@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<VoteOption> builder)
         {
-            builder.ToTable("vote_options");
+            builder.ToTable("tb_vote_options");
 
             builder.HasKey(vo => vo.Id);
 

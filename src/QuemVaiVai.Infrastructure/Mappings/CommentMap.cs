@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.ToTable("comments");
+            builder.ToTable("tb_comments");
 
             builder.HasKey(c => c.Id);
 

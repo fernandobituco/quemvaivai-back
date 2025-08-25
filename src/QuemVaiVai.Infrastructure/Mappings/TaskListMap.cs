@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<TaskList> builder)
         {
-            builder.ToTable("task_lists");
+            builder.ToTable("tb_task_lists");
 
             builder.HasKey(tl => tl.Id);
 

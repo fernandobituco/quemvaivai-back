@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<GroupUser> builder)
         {
-            builder.ToTable("group_users");
+            builder.ToTable("tb_group_users");
 
             builder.HasKey(gu => gu.Id);
 

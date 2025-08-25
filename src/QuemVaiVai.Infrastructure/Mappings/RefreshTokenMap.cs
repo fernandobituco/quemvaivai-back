@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.ToTable("refresh_tokens");
+            builder.ToTable("tb_refresh_tokens");
 
             builder.HasKey(ue => ue.Id);
 

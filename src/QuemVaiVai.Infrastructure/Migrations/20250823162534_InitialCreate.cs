@@ -13,13 +13,13 @@ namespace QuemVaiVai.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "groups",
+                name: "tb_groups",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     invite_code = table.Column<Guid>(type: "uuid", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_user = table.Column<int>(type: "integer", nullable: true),
@@ -31,11 +31,11 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_groups", x => x.id);
+                    table.PrimaryKey("PK_tb_groups", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "tb_users",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -54,18 +54,18 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.id);
+                    table.PrimaryKey("PK_tb_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "events",
+                name: "tb_events",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
-                    location = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    location = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     event_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     group_id = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -78,16 +78,16 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_events", x => x.id);
+                    table.PrimaryKey("PK_tb_events", x => x.id);
                     table.ForeignKey(
-                        name: "FK_events_groups_group_id",
+                        name: "FK_tb_events_tb_groups_group_id",
                         column: x => x.group_id,
-                        principalTable: "groups",
+                        principalTable: "tb_groups",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "email_confirmation_tokens",
+                name: "tb_email_confirmation_tokens",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -106,16 +106,16 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_email_confirmation_tokens", x => x.id);
+                    table.PrimaryKey("PK_tb_email_confirmation_tokens", x => x.id);
                     table.ForeignKey(
-                        name: "FK_email_confirmation_tokens_users_user_id",
+                        name: "FK_tb_email_confirmation_tokens_tb_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "group_users",
+                name: "tb_group_users",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -133,21 +133,21 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_group_users", x => x.id);
+                    table.PrimaryKey("PK_tb_group_users", x => x.id);
                     table.ForeignKey(
-                        name: "FK_group_users_groups_group_id",
+                        name: "FK_tb_group_users_tb_groups_group_id",
                         column: x => x.group_id,
-                        principalTable: "groups",
+                        principalTable: "tb_groups",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_group_users_users_user_id",
+                        name: "FK_tb_group_users_tb_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "refresh_tokens",
+                name: "tb_refresh_tokens",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -161,23 +161,23 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_refresh_tokens", x => x.id);
+                    table.PrimaryKey("PK_tb_refresh_tokens", x => x.id);
                     table.ForeignKey(
-                        name: "FK_refresh_tokens_users_user_id",
+                        name: "FK_tb_refresh_tokens_tb_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "comments",
+                name: "tb_comments",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     event_id = table.Column<int>(type: "integer", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    content = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    content = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_user = table.Column<int>(type: "integer", nullable: true),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -188,21 +188,21 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_comments", x => x.id);
+                    table.PrimaryKey("PK_tb_comments", x => x.id);
                     table.ForeignKey(
-                        name: "FK_comments_events_event_id",
+                        name: "FK_tb_comments_tb_events_event_id",
                         column: x => x.event_id,
-                        principalTable: "events",
+                        principalTable: "tb_events",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_comments_users_user_id",
+                        name: "FK_tb_comments_tb_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "task_lists",
+                name: "tb_task_lists",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -219,16 +219,16 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_task_lists", x => x.id);
+                    table.PrimaryKey("PK_tb_task_lists", x => x.id);
                     table.ForeignKey(
-                        name: "FK_task_lists_events_event_id",
+                        name: "FK_tb_task_lists_tb_events_event_id",
                         column: x => x.event_id,
-                        principalTable: "events",
+                        principalTable: "tb_events",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_events",
+                name: "tb_user_events",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -246,21 +246,21 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_events", x => x.id);
+                    table.PrimaryKey("PK_tb_user_events", x => x.id);
                     table.ForeignKey(
-                        name: "FK_user_events_events_event_id",
+                        name: "FK_tb_user_events_tb_events_event_id",
                         column: x => x.event_id,
-                        principalTable: "events",
+                        principalTable: "tb_events",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_user_events_users_user_id",
+                        name: "FK_tb_user_events_tb_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "vote_options",
+                name: "tb_vote_options",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -278,16 +278,16 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_vote_options", x => x.id);
+                    table.PrimaryKey("PK_tb_vote_options", x => x.id);
                     table.ForeignKey(
-                        name: "FK_vote_options_events_event_id",
+                        name: "FK_tb_vote_options_tb_events_event_id",
                         column: x => x.event_id,
-                        principalTable: "events",
+                        principalTable: "tb_events",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "task_items",
+                name: "tb_task_items",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -307,21 +307,21 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_task_items", x => x.id);
+                    table.PrimaryKey("PK_tb_task_items", x => x.id);
                     table.ForeignKey(
-                        name: "FK_task_items_task_lists_TaskListId",
+                        name: "FK_tb_task_items_tb_task_lists_TaskListId",
                         column: x => x.TaskListId,
-                        principalTable: "task_lists",
+                        principalTable: "tb_task_lists",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_task_items_users_AssignedUserId",
+                        name: "FK_tb_task_items_tb_users_AssignedUserId",
                         column: x => x.AssignedUserId,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "votes",
+                name: "tb_votes",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -338,92 +338,92 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_votes", x => x.id);
+                    table.PrimaryKey("PK_tb_votes", x => x.id);
                     table.ForeignKey(
-                        name: "FK_votes_users_user_id",
+                        name: "FK_tb_votes_tb_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "users",
+                        principalTable: "tb_users",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_votes_vote_options_vote_option_id",
+                        name: "FK_tb_votes_tb_vote_options_vote_option_id",
                         column: x => x.vote_option_id,
-                        principalTable: "vote_options",
+                        principalTable: "tb_vote_options",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_comments_event_id",
-                table: "comments",
+                name: "IX_tb_comments_event_id",
+                table: "tb_comments",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_comments_user_id",
-                table: "comments",
+                name: "IX_tb_comments_user_id",
+                table: "tb_comments",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_email_confirmation_tokens_user_id",
-                table: "email_confirmation_tokens",
+                name: "IX_tb_email_confirmation_tokens_user_id",
+                table: "tb_email_confirmation_tokens",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_events_group_id",
-                table: "events",
+                name: "IX_tb_events_group_id",
+                table: "tb_events",
                 column: "group_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_group_users_group_id",
-                table: "group_users",
+                name: "IX_tb_group_users_group_id",
+                table: "tb_group_users",
                 column: "group_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_group_users_user_id",
-                table: "group_users",
+                name: "IX_tb_group_users_user_id",
+                table: "tb_group_users",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_refresh_tokens_user_id",
-                table: "refresh_tokens",
+                name: "IX_tb_refresh_tokens_user_id",
+                table: "tb_refresh_tokens",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_task_items_AssignedUserId",
-                table: "task_items",
+                name: "IX_tb_task_items_AssignedUserId",
+                table: "tb_task_items",
                 column: "AssignedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_task_items_TaskListId",
-                table: "task_items",
+                name: "IX_tb_task_items_TaskListId",
+                table: "tb_task_items",
                 column: "TaskListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_task_lists_event_id",
-                table: "task_lists",
+                name: "IX_tb_task_lists_event_id",
+                table: "tb_task_lists",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_events_event_id",
-                table: "user_events",
+                name: "IX_tb_user_events_event_id",
+                table: "tb_user_events",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_events_user_id",
-                table: "user_events",
+                name: "IX_tb_user_events_user_id",
+                table: "tb_user_events",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_vote_options_event_id",
-                table: "vote_options",
+                name: "IX_tb_vote_options_event_id",
+                table: "tb_vote_options",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_votes_user_id",
-                table: "votes",
+                name: "IX_tb_votes_user_id",
+                table: "tb_votes",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_votes_vote_option_id",
-                table: "votes",
+                name: "IX_tb_votes_vote_option_id",
+                table: "tb_votes",
                 column: "vote_option_id");
         }
 
@@ -431,40 +431,40 @@ namespace QuemVaiVai.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "comments");
+                name: "tb_comments");
 
             migrationBuilder.DropTable(
-                name: "email_confirmation_tokens");
+                name: "tb_email_confirmation_tokens");
 
             migrationBuilder.DropTable(
-                name: "group_users");
+                name: "tb_group_users");
 
             migrationBuilder.DropTable(
-                name: "refresh_tokens");
+                name: "tb_refresh_tokens");
 
             migrationBuilder.DropTable(
-                name: "task_items");
+                name: "tb_task_items");
 
             migrationBuilder.DropTable(
-                name: "user_events");
+                name: "tb_user_events");
 
             migrationBuilder.DropTable(
-                name: "votes");
+                name: "tb_votes");
 
             migrationBuilder.DropTable(
-                name: "task_lists");
+                name: "tb_task_lists");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "tb_users");
 
             migrationBuilder.DropTable(
-                name: "vote_options");
+                name: "tb_vote_options");
 
             migrationBuilder.DropTable(
-                name: "events");
+                name: "tb_events");
 
             migrationBuilder.DropTable(
-                name: "groups");
+                name: "tb_groups");
         }
     }
 }

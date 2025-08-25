@@ -45,7 +45,7 @@ public class GroupController : BaseController<GroupController>
             throw new UnauthorizedException("Invalid user ID in token.");
 
         var createdGroup = await _groupAppService.CreateGroupAsync(dto, userIdInt);
-        var response = new GroupResponse(createdGroup.Id, createdGroup.Name, createdGroup.Description);
+        var response = new GroupResponse(createdGroup.Id, createdGroup.Name, createdGroup.Description, createdGroup.InviteCode);
         return Result<GroupResponse>.Success(response);
     }
 
@@ -68,7 +68,8 @@ public class GroupController : BaseController<GroupController>
             g.MemberCount,
             g.EventCount,
             g.NextEvent,
-            g.CanEdit
+            g.CanEdit,
+            g.InviteCode
         ))
         .ToList();
 

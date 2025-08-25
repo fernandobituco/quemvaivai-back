@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<EmailConfirmationToken> builder)
         {
-            builder.ToTable("email_confirmation_tokens");
+            builder.ToTable("tb_email_confirmation_tokens");
 
             builder.HasKey(ect => ect.Id);
 

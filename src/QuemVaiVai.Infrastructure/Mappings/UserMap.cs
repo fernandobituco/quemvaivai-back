@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("users");
+            builder.ToTable("tb_users");
 
             builder.HasKey(u => u.Id);
 

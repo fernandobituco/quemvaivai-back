@@ -8,7 +8,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<UserEvent> builder)
         {
-            builder.ToTable("user_events");
+            builder.ToTable("tb_user_events");
 
             builder.HasKey(ue => ue.Id);
 

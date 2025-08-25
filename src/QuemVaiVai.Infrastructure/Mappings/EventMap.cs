@@ -13,7 +13,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Event> builder)
         {
-            builder.ToTable("events");
+            builder.ToTable("tb_events");
 
             builder.HasKey(e => e.Id);
 

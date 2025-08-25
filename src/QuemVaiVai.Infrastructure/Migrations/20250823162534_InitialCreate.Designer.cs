@@ -12,7 +12,7 @@ using QuemVaiVai.Infrastructure.Contexts;
 namespace QuemVaiVai.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250823120114_InitialCreate")]
+    [Migration("20250823162534_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("comments", (string)null);
+                    b.ToTable("tb_comments", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.EmailConfirmationToken", b =>
@@ -145,7 +145,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("email_confirmation_tokens", (string)null);
+                    b.ToTable("tb_email_confirmation_tokens", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Event", b =>
@@ -212,7 +212,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("events", (string)null);
+                    b.ToTable("tb_events", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Group", b =>
@@ -270,7 +270,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("groups", (string)null);
+                    b.ToTable("tb_groups", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.GroupUser", b =>
@@ -328,7 +328,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("group_users", (string)null);
+                    b.ToTable("tb_group_users", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.RefreshToken", b =>
@@ -369,7 +369,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("refresh_tokens", (string)null);
+                    b.ToTable("tb_refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.TaskItem", b =>
@@ -433,7 +433,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("TaskListId");
 
-                    b.ToTable("task_items", (string)null);
+                    b.ToTable("tb_task_items", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.TaskList", b =>
@@ -486,7 +486,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("task_lists", (string)null);
+                    b.ToTable("tb_task_lists", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.User", b =>
@@ -549,7 +549,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("tb_users", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.UserEvent", b =>
@@ -607,7 +607,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_events", (string)null);
+                    b.ToTable("tb_user_events", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Vote", b =>
@@ -661,7 +661,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("VoteOptionId");
 
-                    b.ToTable("votes", (string)null);
+                    b.ToTable("tb_votes", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.VoteOption", b =>
@@ -717,7 +717,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("vote_options", (string)null);
+                    b.ToTable("tb_vote_options", (string)null);
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Comment", b =>

@@ -40,6 +40,7 @@ namespace QuemVaiVai.Application.Services
             {
                 GroupId = (int)groupId,
                 UserId = userId,
+                Role = Role.GUEST,
             };
 
             await _repository.AddAsync(groupUser, userId);

@@ -21,9 +21,9 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                     else false 
                 end as CanEdit
                 from {table} g  
-                inner join group_users g2 on g2.group_id = g.id and g2.user_id = @UserId and g2.deleted = false 
-                left join events e on e.group_id = g.id and e.deleted = false
-                left join group_users gu_all on gu_all.group_id = g.id and gu_all.deleted = false
+                inner join tb_group_users g2 on g2.group_id = g.id and g2.user_id = @UserId and g2.deleted = false 
+                left join tb_events e on e.group_id = g.id and e.deleted = false
+                left join tb_group_users gu_all on gu_all.group_id = g.id and gu_all.deleted = false
                 where g.deleted = false
                 group by g.id, g.name, g.description, g2.role ;";
             var groups = await GetAll<GroupCardDTO>(sql, new { UserId = userId });
