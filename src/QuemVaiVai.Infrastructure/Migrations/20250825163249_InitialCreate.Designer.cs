@@ -12,7 +12,7 @@ using QuemVaiVai.Infrastructure.Contexts;
 namespace QuemVaiVai.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250823162534_InitialCreate")]
+    [Migration("20250825163249_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

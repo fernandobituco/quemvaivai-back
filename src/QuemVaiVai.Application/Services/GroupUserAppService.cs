@@ -46,17 +46,6 @@ namespace QuemVaiVai.Application.Services
             await _repository.AddAsync(groupUser, userId);
         }
 
-        public async Task ChangeUserRoleInGroup(int groupId, int userId, Role role, int responsibleUserId)
-        {
-            await CanUserEditGroup(groupId, responsibleUserId);
-
-            var groupUser = await _groupUserDapperRepository.GetByGroupIdAndUserId(groupId, userId) ?? throw new NotFoundException("GroupUser");
-
-            groupUser.Role = role;
-
-            await _repository.UpdateAsync(groupUser);
-        }
-
         public async Task RemoveUserFromGroup(int groupId, int userId, int responsibleUserId)
         {
             await CanUserEditGroup(groupId, responsibleUserId);
@@ -67,8 +56,23 @@ namespace QuemVaiVai.Application.Services
                 throw new NotFoundException("GroupUser");
 
             await _repository.DeleteAsync(groupUser, responsibleUserId);
+        }
 
-            throw new NotImplementedException();
+        public async Task ChangeRole(int groupId, int userId, Role role, int responsibleUserId)
+        {
+            if (role == Role.ADMIN)
+                throw new RoleChangeNotAllowedException();
+
+            await CanUserEditGroup(groupId, responsibleUserId);
+
+            var groupUser = await _groupUserDapperRepository.GetByGroupIdAndUserId(groupId, userId) ?? throw new NotFoundException("GroupUser");
+
+            if (groupUser.Role == Role.ADMIN)
+                throw new RoleChangeNotAllowedException();
+
+            groupUser.Role = role;
+
+            await _repository.UpdateAsync(groupUser);
         }
 
         private async Task CanUserEditGroup(int groupId, int userId)

@@ -31,7 +31,7 @@ public class GroupUserController : BaseController<GroupUserController>
     [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
     public async Task<Result<bool>> JoinGroup([FromBody] JoinGroupDTO dto)
     {
-            ModelStateValidation();
+        ModelStateValidation();
 
         var userId = _userContext.GetCurrentUserId();
 
@@ -41,6 +41,46 @@ public class GroupUserController : BaseController<GroupUserController>
         }
 
         await _groupUserAppService.JoinGroup(dto.InviteCode, (int)userId);
+        return Result<bool>.Success(true);
+    }
+
+
+    [HttpPut]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
+    public async Task<Result<bool>> ChangeRole([FromBody] GroupUserDTO dto)
+    {
+        ModelStateValidation();
+
+        var responsibleUserId = _userContext.GetCurrentUserId();
+
+        if (responsibleUserId == null || responsibleUserId <= 0)
+        {
+            throw new UnauthorizedException("Invalid user ID in token.");
+        }
+
+        await _groupUserAppService.ChangeRole(dto.GroupId, dto.UserId, dto.Role, (int)responsibleUserId);
+        return Result<bool>.Success(true);
+    }
+
+
+    [HttpDelete("{groupId}/{userId}")]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
+    public async Task<Result<bool>> RemoveUser(int groupId, int userId)
+    {
+        ModelStateValidation();
+
+        var responsibleUserId = _userContext.GetCurrentUserId();
+
+        if (responsibleUserId == null || responsibleUserId <= 0)
+        {
+            throw new UnauthorizedException("Invalid user ID in token.");
+        }
+
+        await _groupUserAppService.RemoveUserFromGroup(groupId, userId, (int)responsibleUserId);
         return Result<bool>.Success(true);
     }
 }

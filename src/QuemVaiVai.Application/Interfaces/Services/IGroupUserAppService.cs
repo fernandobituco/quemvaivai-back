@@ -10,7 +10,7 @@ namespace QuemVaiVai.Application.Interfaces.Services
 {
     public interface IGroupUserAppService
     {
-        Task ChangeUserRoleInGroup(int groupId, int userId, Role role, int responsibleUserId);
+        Task ChangeRole(int groupId, int userId, Role role, int responsibleUserId);
         Task JoinGroup(Guid inviteCode, int userId);
         Task RemoveUserFromGroup(int groupId, int userId, int responsibleUserId);
     }
