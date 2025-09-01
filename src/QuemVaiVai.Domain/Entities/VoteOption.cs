@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace QuemVaiVai.Domain.Entities
 {
     public class VoteOption : BaseEntity
@@ -11,8 +6,9 @@ namespace QuemVaiVai.Domain.Entities
         public int EventId { get; set; }
         public Event Event { get; set; } = null!;
 
-        public DateTime? SuggestedDate { get; set; }
-        public string? SuggestedLocation { get; set; }
+        public DateTime? Date { get; set; }
+        public string? Location { get; set; }
+        public bool Active { get; set; }
 
         public ICollection<Vote> Votes { get; set; } = [];
     }

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Domain.Entities;
 using System.Linq.Expressions;

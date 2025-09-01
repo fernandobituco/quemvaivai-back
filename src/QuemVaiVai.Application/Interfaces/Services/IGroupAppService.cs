@@ -13,5 +13,6 @@ namespace QuemVaiVai.Application.Interfaces.Services
         Task<GroupDTO> CreateGroupAsync(CreateGroupDTO request, int userId);
         Task<GroupDTO> UpdateGroupAsync(UpdateGroupDTO request, int userId);
         Task DeleteGroupAsync(int id, int userId);
+        Task<GroupDTO> GetByInviteCode(Guid inviteCode);
     }
 }

@@ -8,92 +8,93 @@ using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
 
-namespace QuemVaiVai.Api.Controllers;
-
-[ApiController]
-[Route("api/auth")]
-public class AuthController : BaseController<AuthController>
+namespace QuemVaiVai.Api.Controllers
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(
-        IHttpContextAccessor httpContextAccessor,
-        ILogger<AuthController> logger,
-        IAuthService authService,
-        IMapper mapper,
-        IUserContext userContext) : base(httpContextAccessor, logger, mapper, userContext)
+    [ApiController]
+    [Route("api/auth")]
+    public class AuthController : BaseController<AuthController>
     {
-        _authService = authService;
-    }
+        private readonly IAuthService _authService;
 
-    [HttpPost("login")]
-    [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status500InternalServerError)]
-    public async Task<Result<LoginResponse>> Login([FromBody] UserLoginDTO request)
-    {
-        var response = await _authService.LoginAsync(request.Email, request.Password);
-        SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-        return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
-    }
-
-    [HttpPost("refresh")]
-    public async Task<Result<LoginResponse>> RefreshToken([FromBody] string request)
-    {
-        var refreshToken = request ?? GetRefreshTokenFromCookie();
-        if (string.IsNullOrEmpty(refreshToken))
-            throw new InvalidTokenException();
-
-        var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
-
-        SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-
-        return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
-    }
-
-    [HttpPost("force-refresh")]
-    public async Task<Result<LoginResponse>> ForceRefreshToken()
-    {
-        var refreshToken = GetRefreshTokenFromCookie();
-        if (string.IsNullOrEmpty(refreshToken))
-            throw new InvalidTokenException();
-
-        var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
-        SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-        return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
-    }
-
-    [HttpPost("logout")]
-    [Authorize]
-    public async Task<Result<bool>> Logout()
-    {
-        var refreshToken = GetRefreshTokenFromCookie();
-        if (!string.IsNullOrEmpty(refreshToken))
+        public AuthController(
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<AuthController> logger,
+            IAuthService authService,
+            IMapper mapper,
+            IUserContext userContext) : base(httpContextAccessor, logger, mapper, userContext)
         {
-            await _authService.RevokeTokenAsync(refreshToken);
+            _authService = authService;
         }
 
-        Response.Cookies.Delete("refreshToken");
-        return Result<bool>.Success(true);
-    }
-
-    [HttpGet("test")]
-    [HttpHead("test")]
-    [AllowAnonymous]
-    public ActionResult<bool> Test()
-    {
-        return new ActionResult<bool>(true);
-    }
-
-    private void SetRefreshTokenCookie(string refreshToken, DateTime expiry)
-    {
-        Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+        [HttpPost("login")]
+        [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<LoginResponse>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<LoginResponse>> Login([FromBody] UserLoginDTO request)
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.None,
-            Expires = expiry,
-            Path = "/",
-        });
+            var response = await _authService.LoginAsync(request.Email, request.Password);
+            SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
+            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+        }
+
+        [HttpPost("refresh")]
+        public async Task<Result<LoginResponse>> RefreshToken([FromBody] string request)
+        {
+            var refreshToken = request ?? GetRefreshTokenFromCookie();
+            if (string.IsNullOrEmpty(refreshToken))
+                throw new InvalidTokenException();
+
+            var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
+
+            SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
+
+            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+        }
+
+        [HttpPost("force-refresh")]
+        public async Task<Result<LoginResponse>> ForceRefreshToken()
+        {
+            var refreshToken = GetRefreshTokenFromCookie();
+            if (string.IsNullOrEmpty(refreshToken))
+                throw new InvalidTokenException();
+
+            var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
+            SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
+            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<Result<bool>> Logout()
+        {
+            var refreshToken = GetRefreshTokenFromCookie();
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                await _authService.RevokeTokenAsync(refreshToken);
+            }
+
+            Response.Cookies.Delete("refreshToken");
+            return Result<bool>.Success(true);
+        }
+
+        [HttpGet("test")]
+        [HttpHead("test")]
+        [AllowAnonymous]
+        public ActionResult<bool> Test()
+        {
+            return new ActionResult<bool>(true);
+        }
+
+        private void SetRefreshTokenCookie(string refreshToken, DateTime expiry)
+        {
+            Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = expiry,
+                Path = "/",
+            });
+        }
     }
 }

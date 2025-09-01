@@ -19,10 +19,11 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.Property(e => e.Title).HasColumnName("title").IsRequired().HasMaxLength(100);
             builder.Property(e => e.Description).HasColumnName("description");
-            builder.Property(e => e.Location).HasColumnName("location").HasMaxLength(200);
-            builder.Property(e => e.EventDate).HasColumnName("event_date").IsRequired();
+            builder.Property(e => e.Location).HasColumnName("location").HasMaxLength(255);
+            builder.Property(e => e.EventDate).HasColumnName("event_date");
+            builder.Property(g => g.InviteCode).HasColumnName("invite_code").IsRequired();
 
-            builder.Property(e => e.GroupId).HasColumnName("group_id").IsRequired();
+            builder.Property(e => e.GroupId).HasColumnName("group_id");
 
             builder.HasOne(e => e.Group)
                    .WithMany(g => g.Events)

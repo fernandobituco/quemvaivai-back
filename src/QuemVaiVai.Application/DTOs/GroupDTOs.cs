@@ -27,6 +27,7 @@ namespace QuemVaiVai.Application.DTOs
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public Guid InviteCode { get; }
+        public int MemberCount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool Deleted { get; set; }

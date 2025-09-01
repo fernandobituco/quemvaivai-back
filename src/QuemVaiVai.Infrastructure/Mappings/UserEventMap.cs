@@ -29,6 +29,8 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.Property(ue => ue.Status).HasColumnName("status").IsRequired(); // int ENUM
 
+            builder.Property(gu => gu.Role).HasColumnName("role").IsRequired(); // int ENUM
+
             //BaseEntity properties
             builder.Property(ue => ue.Id).HasColumnName("id").IsRequired();
             builder.Property(ue => ue.CreatedAt).HasColumnName("created_at");

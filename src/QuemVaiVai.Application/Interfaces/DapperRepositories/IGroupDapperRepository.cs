@@ -13,5 +13,6 @@ namespace QuemVaiVai.Application.Interfaces.DapperRepositories
         Task<Group?> GetById(int id);
         Task<List<GroupCardDTO>> GetAllByUserId(int userId);
         Task<int?> GetIdByInviteCode(Guid inviteCode);
+        Task<GroupDTO?> GetByInviteCode(Guid inviteCode);
     }
 }

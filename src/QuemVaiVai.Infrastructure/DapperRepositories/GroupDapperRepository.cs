@@ -39,6 +39,19 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return group;
         }
 
+        public async Task<GroupDTO?> GetByInviteCode(Guid inviteCode)
+        {
+            var sql = @"select g.id as Id, g.name as Name, g.description as Description, 
+                COUNT(DISTINCT gu_all.user_id) AS MemberCount 
+                FROM {table} g 
+                left join tb_group_users gu_all on gu_all.group_id = g.id and gu_all.deleted = false
+                WHERE g.invite_code = @InviteCode and g.deleted = false 
+                group by g.id, g.name, g.description ";
+            var group = await Get<GroupDTO>(sql, new { InviteCode = inviteCode });
+
+            return group;
+        }
+
         public async Task<int?> GetIdByInviteCode(Guid inviteCode)
         {
             var sql = "SELECT id from {table} where invite_code = @InviteCode and deleted = false;";

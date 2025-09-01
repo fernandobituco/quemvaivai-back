@@ -12,10 +12,14 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(vo => vo.Id);
 
-
-            builder.Property(vo => vo.SuggestedDate).HasColumnName("suggested_date");
-            builder.Property(vo => vo.SuggestedLocation).HasColumnName("suggested_location");
+            builder.Property(vo => vo.Date).HasColumnName("date");
+            builder.Property(vo => vo.Location).HasColumnName("location");
+            builder.Property(vo => vo.Active).HasColumnName("active");
             builder.Property(vo => vo.EventId).HasColumnName("event_id").IsRequired();
+
+            builder.HasOne(e => e.Event)
+                   .WithMany(g => g.VoteOptions)
+                   .HasForeignKey(e => e.EventId);
 
             //BaseEntity properties
             builder.Property(vo => vo.Id).HasColumnName("id").IsRequired();

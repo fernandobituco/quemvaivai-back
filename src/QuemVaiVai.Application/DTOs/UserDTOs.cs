@@ -61,5 +61,6 @@ namespace QuemVaiVai.Application.DTOs
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public Role Role{ get; set; }
+        public Status? Status { get; set; } = null;
     }
 }

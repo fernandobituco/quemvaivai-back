@@ -33,8 +33,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedAt")
@@ -178,17 +178,21 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<DateTime>("EventDate")
+                    b.Property<DateTime?>("EventDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("event_date");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("integer")
                         .HasColumnName("group_id");
 
+                    b.Property<Guid>("InviteCode")
+                        .HasColumnType("uuid")
+                        .HasColumnName("invite_code");
+
                     b.Property<string>("Location")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("location");
 
                     b.Property<string>("Title")
@@ -243,8 +247,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
                         .HasColumnName("description");
 
                     b.Property<Guid>("InviteCode")
@@ -582,6 +586,10 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("event_id");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
+                        .HasColumnName("role");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
@@ -670,6 +678,10 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -677,6 +689,10 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     b.Property<int?>("CreatedUser")
                         .HasColumnType("integer")
                         .HasColumnName("created_user");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean")
@@ -694,13 +710,9 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("event_id");
 
-                    b.Property<DateTime?>("SuggestedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("suggested_date");
-
-                    b.Property<string>("SuggestedLocation")
+                    b.Property<string>("Location")
                         .HasColumnType("text")
-                        .HasColumnName("suggested_location");
+                        .HasColumnName("location");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -748,8 +760,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 {
                     b.HasOne("QuemVaiVai.Domain.Entities.Group", "Group")
                         .WithMany("Events")
-                        .HasForeignKey("GroupId")
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.Navigation("Group");
                 });
@@ -844,7 +855,7 @@ namespace QuemVaiVai.Infrastructure.Migrations
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.VoteOption", b =>
                 {
                     b.HasOne("QuemVaiVai.Domain.Entities.Event", "Event")
-                        .WithMany()
+                        .WithMany("VoteOptions")
                         .HasForeignKey("EventId")
                         .IsRequired();
 
@@ -856,6 +867,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("UserEvents");
+
+                    b.Navigation("VoteOptions");
                 });
 
             modelBuilder.Entity("QuemVaiVai.Domain.Entities.Group", b =>

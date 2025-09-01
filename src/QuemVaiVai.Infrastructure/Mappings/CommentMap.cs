@@ -27,7 +27,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
                    .HasForeignKey(c => c.EventId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(c => c.Content).HasColumnName("content").IsRequired().HasMaxLength(500);
+            builder.Property(c => c.Content).HasColumnName("content").IsRequired().HasMaxLength(255);
 
             //BaseEntity properties
             builder.Property(c => c.Id).HasColumnName("id").IsRequired();

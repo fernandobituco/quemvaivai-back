@@ -16,5 +16,6 @@ namespace QuemVaiVai.Domain.Entities
         public User User { get; set; } = null!;
 
         public Status Status { get; set; }
+        public Role Role { get; set; }
     }
 }

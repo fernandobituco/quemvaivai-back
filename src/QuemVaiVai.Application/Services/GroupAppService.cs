@@ -6,7 +6,6 @@ using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Domain.Enums;
 using QuemVaiVai.Domain.Exceptions;
-using QuemVaiVai.Domain.Responses;
 
 namespace QuemVaiVai.Application.Services
 {
@@ -61,6 +60,16 @@ namespace QuemVaiVai.Application.Services
             await CanUserEditGroup(groupId, userId);
 
             var group = _mapper.Map<GroupDTO>(await _groupDapperRepository.GetById(groupId));
+
+            group.MemberCount = await _groupUserDapperRepository.GetMemberCountByGroupId(groupId);
+
+            return group ?? throw new NotFoundException("Group");
+        }
+
+        public async Task<GroupDTO> GetByInviteCode(Guid inviteCode)
+        {
+
+            var group = _mapper.Map<GroupDTO>(await _groupDapperRepository.GetByInviteCode(inviteCode));
 
             return group ?? throw new NotFoundException("Group");
         }

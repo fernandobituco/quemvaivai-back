@@ -13,7 +13,7 @@ namespace QuemVaiVai.Infrastructure.Mappings
             builder.HasKey(g => g.Id);
 
             builder.Property(g => g.Name).HasColumnName("name").IsRequired().HasMaxLength(100);
-            builder.Property(g => g.Description).HasColumnName("description").IsRequired().HasMaxLength(100);
+            builder.Property(g => g.Description).HasColumnName("description").IsRequired().HasMaxLength(1000);
             builder.Property(g => g.InviteCode).HasColumnName("invite_code").IsRequired();
 
             //BaseEntity properties

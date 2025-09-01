@@ -1,5 +1,4 @@
 ﻿
-using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Domain.Entities;
 
 namespace QuemVaiVai.Application.Interfaces.DapperRepositories
@@ -13,6 +12,5 @@ namespace QuemVaiVai.Application.Interfaces.DapperRepositories
         Task<bool> ExistsByEmail(string email);
         Task<bool> ExistsByEmailDiferentId(string email, int id);
         Task<User?> GetCompleteForUpdateById(int id);
-        Task<IEnumerable<UserMemberDTO>> GetAllByGroupId(int groupId);
     }
 }

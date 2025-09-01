@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailConfirmationTokenAppService, EmailConfirmationTokenAppService>();
         services.AddScoped<IGroupAppService, GroupAppService>();
         services.AddScoped<IGroupUserAppService, GroupUserAppService>();
+        services.AddScoped<IEventAppService, EventAppService>();
 
         //Repositories
         services.AddScoped<IUserRepository, UserRepository>();
@@ -36,12 +37,16 @@ public static class DependencyInjection
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IGroupUserRepository, GroupUserRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IUserEventRepository, UserEventRepository>();
 
         //DapperRepositories
         services.AddScoped<IUserDapperRepository, UserDapperRepository>();
         services.AddScoped<IEmailConfirmationTokenDapperRepository, EmailConfirmationTokenDapperRepository>();
         services.AddScoped<IGroupDapperRepository, GroupDapperRepository>();
         services.AddScoped<IGroupUserDapperRepository, GroupUserDapperRepository>();
+        services.AddScoped<IEventDapperRepository, EventDapperRepository>();
+        services.AddScoped<IUserEventDapperRepository, UserEventDapperRepository>();
 
         //Security
         services.AddScoped<IPasswordHasher, PasswordHasher>();
