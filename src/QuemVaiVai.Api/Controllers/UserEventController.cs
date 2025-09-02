@@ -82,7 +82,7 @@ namespace QuemVaiVai.Api.Controllers
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
-        public async Task<Result<bool>> ChangeRole([FromBody] UserEvent dto)
+        public async Task<Result<bool>> ChangeRole([FromBody] UserEventDTO dto)
         {
             ModelStateValidation();
 
