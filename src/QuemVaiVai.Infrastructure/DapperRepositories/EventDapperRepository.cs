@@ -21,26 +21,58 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         {
             var sql = @"select t.id as Id, t.title as Title, t.location as location, t.description as Description, t.event_date as EventDate, t.group_id as GroupId, t.invite_code as InviteCode, 
                 tg.name as GroupName, 
-                COUNT(DISTINCT te_going.id) AS Going, COUNT(DISTINCT te_interested.id) AS Interested, 
+                COUNT(DISTINCT tue_going.id) AS Going, COUNT(DISTINCT tue_interested.id) AS Interested, 
                 case
-	                when te.role in (1,2) then true
+	                when tue.role in (1,2) then true
 	                else false
                 end as CanEdit
                 from tb_events t 
                 left join tb_groups tg on tg.id = t.group_id and tg.deleted = false 
-                inner join tb_user_events te on te.user_id = @UserId and te.deleted = false 
-                left join tb_user_events te_going on te_going.event_id = t.id and te_going.deleted = false and te.status = 1 
-                left join tb_user_events te_interested on te_interested.event_id = t.id and te_interested.deleted = false and te.status = 2 
+                inner join tb_user_events tue on tue.user_id = @UserId and tue.deleted = false 
+                left join tb_user_events tue_going on tue_going.event_id = t.id and tue_going.deleted = false and tue_going.status = 1 
+                left join tb_user_events tue_interested on tue_interested.event_id = t.id and tue_interested.deleted = false and tue_interested.status = 2 
                 where t.deleted = false
-                group by t.id, t.title, t.location, t.description, t.event_date, t.group_id, t.invite_code, tg.name, te.role ;";
+                group by t.id, t.title, t.location, t.description, t.event_date, t.group_id, t.invite_code, tg.name, tue.role ;";
             var groups = await GetAll<EventCardDTO>(sql, new { UserId = userId });
 
             return groups.ToList();
         }
 
-        public Task<Event?> GetById(int id)
+        public async Task<Event?> GetById(int id)
         {
-            throw new NotImplementedException();
+            var sql = GetBaseEntityValues + ", title as Title, description as Description, location as location, event_date as EventDate, group_id as GroupId FROM {table} WHERE id = @Id and deleted = false";
+            var result = await Get(sql, new { Id = id });
+
+            return result;
+        }
+
+        public async Task<EventDTO?> GetByInviteCode(Guid inviteCode)
+        {
+            var sql = @"select t.id as Id, t.title as Title, t.location as location, t.description as Description, t.event_date as EventDate, t.group_id as GroupId, t.invite_code as InviteCode, 
+                tg.name as GroupName, 
+                COUNT(DISTINCT tue_going.id) AS Going, COUNT(DISTINCT tue_interested.id) AS Interested, 
+                case
+	                when tue.role in (1,2) then true
+	                else false
+                end as CanEdit
+                from tb_events t 
+                left join tb_groups tg on tg.id = t.group_id and tg.deleted = false 
+                inner join tb_user_events tue on tue.event_id = t.id and tue.deleted = false 
+                left join tb_user_events tue_going on tue_going.event_id = t.id and tue_going.deleted = false and tue_going.status = 1 
+                left join tb_user_events tue_interested on tue_interested.event_id = t.id and tue_interested.deleted = false and tue_interested.status = 2 
+                WHERE t.invite_code = @InviteCode and t.deleted = false 
+                group by t.id, t.title, t.description, tg.name, tue.role ";
+            var eventDto = await Get<EventDTO>(sql, new { InviteCode = inviteCode });
+
+            return eventDto;
+        }
+
+        public async Task<int?> GetIdByInviteCode(Guid inviteCode)
+        {
+            var sql = "SELECT id from {table} where invite_code = @InviteCode and deleted = false;";
+            var id = await Get<int>(sql, new { InviteCode = inviteCode });
+
+            return id;
         }
     }
 }

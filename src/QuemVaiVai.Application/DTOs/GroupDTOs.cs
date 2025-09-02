@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuemVaiVai.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuemVaiVai.Application.DTOs
 {

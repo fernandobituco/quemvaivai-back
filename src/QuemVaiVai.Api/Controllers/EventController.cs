@@ -4,6 +4,7 @@ using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Application.Interfaces.Services;
+using QuemVaiVai.Application.Services;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
 using System.Security.Claims;
@@ -86,6 +87,91 @@ namespace QuemVaiVai.Api.Controllers
             .ToList();
 
             return Result<List<EventCardResponse>>.Success(response);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<EventCardResponse>> GetGroupById(int id)
+        {
+            var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
+
+            var result = await _eventAppService.GetById(id, userId);
+
+            EventCardResponse response = new(
+                result.Id,
+                result.Title,
+                result.Description,
+                result.Location,
+                result.EventDate,
+                result.InviteCode,
+                result.GroupName,
+                result.GroupId,
+                result.Interested,
+                result.Going,
+                false,
+                result.ActiveVote
+            );
+
+            return Result<EventCardResponse>.Success(response);
+        }
+
+        [HttpGet("invitecode/{inviteCode}")]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<EventCardResponse>> GetGroupByInviteCode(Guid inviteCode)
+        {
+            var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
+
+            var result = await _eventAppService.GetByInviteCode(inviteCode);
+
+            EventCardResponse response = new(
+                result.Id,
+                result.Title,
+                result.Description,
+                result.Location,
+                result.EventDate,
+                result.InviteCode,
+                result.GroupName,
+                result.GroupId,
+                result.Interested,
+                result.Going,
+                false,
+                result.ActiveVote
+            );
+
+            return Result<EventCardResponse>.Success(response);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<EventCardResponse>> UpdateGroup([FromBody] UpdateEventDTO dto)
+        {
+            ModelStateValidation();
+
+            var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
+
+            var result = await _eventAppService.UpdateEventAsync(dto, userId);
+
+            EventCardResponse response = new(
+                result.Id,
+                result.Title,
+                result.Description,
+                result.Location,
+                result.EventDate,
+                result.InviteCode,
+                result.GroupName,
+                result.GroupId,
+                result.Interested,
+                result.Going,
+                true,
+                result.ActiveVote
+            );
+            return Result<EventCardResponse>.Success(response);
         }
     }
 }

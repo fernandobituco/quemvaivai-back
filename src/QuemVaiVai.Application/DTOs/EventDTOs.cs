@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuemVaiVai.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuemVaiVai.Application.DTOs
 {
@@ -9,9 +10,12 @@ namespace QuemVaiVai.Application.DTOs
         public string? Description { get; set; }
         public string? Location { get; set; }
         public DateTime? EventDate { get; set; }
+        public int Going { get; set; }
+        public int Interested { get; set; }
         public int GroupId { get; set; }
         public string GroupName { get; set; } = string.Empty;
         public Guid InviteCode { get; set; }
+        public bool ActiveVote { get; set; }
 
         //public ICollection<Comment> Comments { get; set; } = [];
         //public ICollection<VoteOption> VoteOptions { get; set; } = [];
@@ -25,6 +29,8 @@ namespace QuemVaiVai.Application.DTOs
         public string? Location { get; set; }
         public DateTime? EventDate { get; set; }
         public int? GroupId { get; set; }
+        public string GroupName { get; set; } = string.Empty;
+        public Guid InviteCode { get; }
     }
     public class UpdateEventDTO
     {
@@ -56,5 +62,11 @@ namespace QuemVaiVai.Application.DTOs
         public int GroupId { get; set; }
         public string GroupName { get; set; } = string.Empty;
         public Guid InviteCode { get; }
+    }
+
+    public class JoinEventDTO
+    {
+        public Guid InviteCode { get; set; }
+        public Status Status { get; set; }
     }
 }

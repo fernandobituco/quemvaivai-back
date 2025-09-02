@@ -68,7 +68,6 @@ namespace QuemVaiVai.Application.Services
 
         public async Task<GroupDTO> GetByInviteCode(Guid inviteCode)
         {
-
             var group = _mapper.Map<GroupDTO>(await _groupDapperRepository.GetByInviteCode(inviteCode));
 
             return group ?? throw new NotFoundException("Group");

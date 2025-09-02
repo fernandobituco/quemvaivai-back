@@ -1,10 +1,4 @@
-﻿using QuemVaiVai.Domain.Entities;
-using QuemVaiVai.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QuemVaiVai.Domain.Enums;
 
 namespace QuemVaiVai.Application.Interfaces.Services
 {

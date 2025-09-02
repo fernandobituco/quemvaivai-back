@@ -39,9 +39,9 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         public async Task<int> GetMemberCountByGroupId(int groupId)
         {
             var sql = @"SELECT count (t.id) from {table} t inner join tb_users tu on t.user_id = tu.id and tu.deleted = false where t.group_id = @GroupId and t.deleted = false;";
-            var id = await Get<int>(sql, new { GroupId = groupId });
+            var count = await Get<int>(sql, new { GroupId = groupId });
 
-            return id;
+            return count;
         }
 
         public async Task<IEnumerable<UserMemberDTO>> GetAllByGroupId(int groupId)

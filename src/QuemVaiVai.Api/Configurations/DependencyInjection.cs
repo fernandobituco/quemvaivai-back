@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IGroupAppService, GroupAppService>();
         services.AddScoped<IGroupUserAppService, GroupUserAppService>();
         services.AddScoped<IEventAppService, EventAppService>();
+        services.AddScoped<IUserEventAppService, UserEventAppService>();
 
         //Repositories
         services.AddScoped<IUserRepository, UserRepository>();

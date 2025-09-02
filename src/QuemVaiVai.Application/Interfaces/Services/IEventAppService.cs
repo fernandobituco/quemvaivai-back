@@ -11,7 +11,8 @@ namespace QuemVaiVai.Application.Interfaces.Services
     {
         Task<EventDTO> GetById(int groupId, int userId);
         Task<EventDTO> CreateEventAsync(CreateEventDTO request, int userId);
-        Task<EventDTO> UpdateEventAsync(UpdateGroupDTO request, int userId);
-        Task DeleteGroupAsync(int id, int userId);
+        Task<EventDTO> UpdateEventAsync(UpdateEventDTO request, int userId);
+        Task DeleteEventAsync(int id, int userId);
+        Task<EventDTO> GetByInviteCode(Guid inviteCode);
     }
 }

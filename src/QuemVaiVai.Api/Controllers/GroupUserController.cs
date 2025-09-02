@@ -27,7 +27,6 @@ namespace QuemVaiVai.Api.Controllers
             _dapperRepository = dapperRepository;
         }
 
-
         [HttpPost("invite")]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
@@ -38,10 +37,9 @@ namespace QuemVaiVai.Api.Controllers
 
             var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
 
-            await _groupUserAppService.JoinGroup(dto.InviteCode, (int)userId);
+            await _groupUserAppService.JoinGroup(dto.InviteCode, userId);
             return Result<bool>.Success(true);
         }
-
 
         [HttpPut]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
@@ -53,10 +51,9 @@ namespace QuemVaiVai.Api.Controllers
 
             var responsibleUserId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
 
-            await _groupUserAppService.ChangeRole(dto.GroupId, dto.UserId, dto.Role, (int)responsibleUserId);
+            await _groupUserAppService.ChangeRole(dto.GroupId, dto.UserId, dto.Role, responsibleUserId);
             return Result<bool>.Success(true);
         }
-
 
         [HttpDelete("{groupId}/{userId}")]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
@@ -68,7 +65,7 @@ namespace QuemVaiVai.Api.Controllers
 
             var responsibleUserId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
 
-            await _groupUserAppService.RemoveUserFromGroup(groupId, userId, (int)responsibleUserId);
+            await _groupUserAppService.RemoveUserFromGroup(groupId, userId, responsibleUserId);
             return Result<bool>.Success(true);
         }
 
