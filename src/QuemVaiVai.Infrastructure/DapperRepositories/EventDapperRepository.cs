@@ -28,7 +28,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                 end as CanEdit
                 from tb_events t 
                 left join tb_groups tg on tg.id = t.group_id and tg.deleted = false 
-                inner join tb_user_events tue on tue.user_id = @UserId and tue.deleted = false 
+                inner join tb_user_events tue on tue.user_id = @UserId and tue.deleted = false and tue.event_id = t.id 
                 left join tb_user_events tue_going on tue_going.event_id = t.id and tue_going.deleted = false and tue_going.status = 1 
                 left join tb_user_events tue_interested on tue_interested.event_id = t.id and tue_interested.deleted = false and tue_interested.status = 2 
                 where t.deleted = false
@@ -57,7 +57,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                 end as CanEdit
                 from tb_events t 
                 left join tb_groups tg on tg.id = t.group_id and tg.deleted = false 
-                inner join tb_user_events tue on tue.event_id = t.id and tue.deleted = false 
+                inner join tb_user_events tue on tue.event_id = t.id and tue.deleted = false and tue.event_id = t.id 
                 left join tb_user_events tue_going on tue_going.event_id = t.id and tue_going.deleted = false and tue_going.status = 1 
                 left join tb_user_events tue_interested on tue_interested.event_id = t.id and tue_interested.deleted = false and tue_interested.status = 2 
                 WHERE t.invite_code = @InviteCode and t.deleted = false 
