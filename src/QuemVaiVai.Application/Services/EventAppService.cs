@@ -92,7 +92,7 @@ namespace QuemVaiVai.Application.Services
             eventById.Description = request.Description;
             eventById.EventDate = request.EventDate;
             eventById.Location = request.Location;
-            eventById.GroupId = request.GroupId;
+            eventById.GroupId = request.GroupId > 0 ? request.GroupId : null;
 
             await _repository.UpdateAsync(eventById, userId);
 
