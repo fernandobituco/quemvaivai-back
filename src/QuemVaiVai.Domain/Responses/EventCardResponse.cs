@@ -1,4 +1,6 @@
 ﻿
+using QuemVaiVai.Domain.Enums;
+
 namespace QuemVaiVai.Domain.Responses
 {
     public record EventCardResponse(
@@ -14,6 +16,7 @@ namespace QuemVaiVai.Domain.Responses
         int Going,
         bool CanEdit = true,
         bool ActiveVote = false,
-        bool UserHasTaskItem = false
+        bool UserHasTaskItem = false,
+        Status? Status = null
         );
 }

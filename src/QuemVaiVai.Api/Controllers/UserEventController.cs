@@ -96,18 +96,13 @@ namespace QuemVaiVai.Api.Controllers
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
-        public async Task<Result<bool>> ChangeStatus([FromBody] UserEvent dto)
+        public async Task<Result<bool>> ChangeStatus([FromBody] ChangeStatusDTO dto)
         {
             ModelStateValidation();
 
             var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
 
-            if (userId != dto.UserId)
-            {
-                throw new UnauthorizedException();
-            }
-
-            await _userEventAppService.ChangeStatus(dto.EventId, dto.UserId, dto.Status);
+            await _userEventAppService.ChangeStatus(dto.EventId, userId, dto.Status);
             return Result<bool>.Success(true);
         }
     }

@@ -10,4 +10,10 @@ namespace QuemVaiVai.Application.DTOs
         public Role Role { get; set; }
         public Status? Status { get; set; }
     }
+
+    public class ChangeStatusDTO
+    {
+        public int EventId { get; set; }
+        public Status Status { get; set; }
+    }
 }

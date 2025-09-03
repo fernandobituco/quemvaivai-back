@@ -16,6 +16,7 @@ namespace QuemVaiVai.Application.DTOs
         public string GroupName { get; set; } = string.Empty;
         public Guid InviteCode { get; set; }
         public bool ActiveVote { get; set; }
+        public Status Status { get; set; }
 
         //public ICollection<Comment> Comments { get; set; } = [];
         //public ICollection<VoteOption> VoteOptions { get; set; } = [];
@@ -62,6 +63,7 @@ namespace QuemVaiVai.Application.DTOs
         public int GroupId { get; set; }
         public string GroupName { get; set; } = string.Empty;
         public Guid InviteCode { get; }
+        public Status Status { get; set; }
     }
 
     public class JoinEventDTO

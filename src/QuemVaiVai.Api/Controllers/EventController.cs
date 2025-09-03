@@ -82,7 +82,8 @@ namespace QuemVaiVai.Api.Controllers
                 e.Going,
                 e.CanEdit,
                 e.ActiveVote,
-                false
+                false,
+                e.Status
             ))
             .ToList();
 
@@ -111,7 +112,9 @@ namespace QuemVaiVai.Api.Controllers
                 result.Interested,
                 result.Going,
                 false,
-                result.ActiveVote
+                result.ActiveVote,
+                false,
+                result.Status
             );
 
             return Result<EventCardResponse>.Success(response);
@@ -149,7 +152,7 @@ namespace QuemVaiVai.Api.Controllers
         [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status500InternalServerError)]
-        public async Task<Result<EventCardResponse>> UpdateGroup([FromBody] UpdateEventDTO dto)
+        public async Task<Result<EventCardResponse>> UpdateEvent([FromBody] UpdateEventDTO dto)
         {
             ModelStateValidation();
 

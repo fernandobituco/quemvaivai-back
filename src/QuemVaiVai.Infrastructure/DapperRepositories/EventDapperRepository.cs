@@ -20,7 +20,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         public async Task<List<EventCardDTO>> GetAllByUserId(int userId)
         {
             var sql = @"select t.id as Id, t.title as Title, t.location as location, t.description as Description, t.event_date as EventDate, t.group_id as GroupId, t.invite_code as InviteCode, 
-                tg.name as GroupName, 
+                tg.name as GroupName, tue.status as Status, 
                 COUNT(DISTINCT tue_going.id) AS Going, COUNT(DISTINCT tue_interested.id) AS Interested, 
                 case
 	                when tue.role in (1,2) then true
@@ -32,7 +32,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                 left join tb_user_events tue_going on tue_going.event_id = t.id and tue_going.deleted = false and tue_going.status = 1 
                 left join tb_user_events tue_interested on tue_interested.event_id = t.id and tue_interested.deleted = false and tue_interested.status = 2 
                 where t.deleted = false
-                group by t.id, t.title, t.location, t.description, t.event_date, t.group_id, t.invite_code, tg.name, tue.role ;";
+                group by t.id, t.title, t.location, t.description, t.event_date, t.group_id, t.invite_code, tg.name, tue.role, tue.status ;";
             var groups = await GetAll<EventCardDTO>(sql, new { UserId = userId });
 
             return groups.ToList();
@@ -49,7 +49,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         public async Task<EventDTO?> GetByInviteCode(Guid inviteCode)
         {
             var sql = @"select t.id as Id, t.title as Title, t.location as location, t.description as Description, t.event_date as EventDate, t.group_id as GroupId, t.invite_code as InviteCode, 
-                tg.name as GroupName, 
+                tg.name as GroupName, tue.status as Status, 
                 COUNT(DISTINCT tue_going.id) AS Going, COUNT(DISTINCT tue_interested.id) AS Interested, 
                 case
 	                when tue.role in (1,2) then true
@@ -61,7 +61,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                 left join tb_user_events tue_going on tue_going.event_id = t.id and tue_going.deleted = false and tue_going.status = 1 
                 left join tb_user_events tue_interested on tue_interested.event_id = t.id and tue_interested.deleted = false and tue_interested.status = 2 
                 WHERE t.invite_code = @InviteCode and t.deleted = false 
-                group by t.id, t.title, t.description, tg.name, tue.role ";
+                group by t.id, t.title, t.description, tg.name, tue.role, tue.status ";
             var eventDto = await Get<EventDTO>(sql, new { InviteCode = inviteCode });
 
             return eventDto;
