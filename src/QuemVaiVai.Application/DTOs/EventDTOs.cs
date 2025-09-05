@@ -71,4 +71,16 @@ namespace QuemVaiVai.Application.DTOs
         public Guid InviteCode { get; set; }
         public Status Status { get; set; }
     }
+
+    public class EventFiltersDto
+    {
+        public int? GroupId { get; set; }
+        public EventStatusFilter? Status { get; set; }
+        public int? Situation { get; set; }
+    }
+    public enum EventStatusFilter
+    {
+        Upcoming,
+        Past
+    }
 }
