@@ -15,8 +15,6 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         public async Task<bool> CanUserEditGroup(int userId, int groupId)
         {
             var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE user_id = @UserId AND group_id = @GroupId AND role in (1, 2) AND deleted = false);";
-            Console.WriteLine("CanUserEditGroup Sql");
-            Console.WriteLine(sql);
             var exists = await Get<bool>(sql, new { UserId = userId, GroupId = groupId });
 
             return exists;
