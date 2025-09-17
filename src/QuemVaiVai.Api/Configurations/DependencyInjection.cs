@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IGroupUserAppService, GroupUserAppService>();
         services.AddScoped<IEventAppService, EventAppService>();
         services.AddScoped<IUserEventAppService, UserEventAppService>();
+        services.AddScoped<ITaskListAppService, TaskListAppService>();
 
         //Repositories
         services.AddScoped<IUserRepository, UserRepository>();
@@ -40,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<IGroupUserRepository, GroupUserRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IUserEventRepository, UserEventRepository>();
+        services.AddScoped<ITaskListRepository, TaskListRepository>();
 
         //DapperRepositories
         services.AddScoped<IUserDapperRepository, UserDapperRepository>();
@@ -48,6 +50,7 @@ public static class DependencyInjection
         services.AddScoped<IGroupUserDapperRepository, GroupUserDapperRepository>();
         services.AddScoped<IEventDapperRepository, EventDapperRepository>();
         services.AddScoped<IUserEventDapperRepository, UserEventDapperRepository>();
+        services.AddScoped<ITaskListDapperRepository, TaskListDapperRepository>();
 
         //Security
         services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -55,6 +58,7 @@ public static class DependencyInjection
 
         //Email
         services.AddScoped<IEmailSender, SmtpEmailSender>();
+        services.AddScoped<IEmailSender, SendGridEmailSender>();
         services.AddScoped<IEmailTemplateBuilder, EmailTemplateBuilder>();
 
         //Contexts

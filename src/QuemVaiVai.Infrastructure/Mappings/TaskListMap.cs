@@ -12,7 +12,6 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(tl => tl.Id);
 
-
             builder.Property(tl => tl.Title).HasColumnName("title");
 
             builder.Property(tl => tl.EventId).HasColumnName("event_id");
