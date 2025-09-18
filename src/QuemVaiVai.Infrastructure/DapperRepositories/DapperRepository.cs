@@ -50,9 +50,6 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         protected async Task<TModel?> Get<TModel>(string sql, object? parameters = null)
         {
             var parsedSql = ReplaceTablePlaceholder(sql);
-            Console.WriteLine("CanUserEditGroup Sql");
-            Console.WriteLine(sql);
-            Console.WriteLine(JsonSerializer.Serialize(parameters));
             return await _connection.QueryFirstOrDefaultAsync<TModel>(parsedSql, parameters);
         }
 
