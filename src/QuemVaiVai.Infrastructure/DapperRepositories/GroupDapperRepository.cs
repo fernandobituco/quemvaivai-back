@@ -19,7 +19,13 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                 case 
                     when g2.role IN (1, 2) then true 
                     else false 
-                end as CanEdit
+                end as CanEdit,
+                MIN(
+                        CASE 
+                            WHEN e.event_date > NOW() THEN e.event_date 
+                            ELSE NULL 
+                        END
+                    ) AS NextEvent
                 from {table} g  
                 inner join tb_group_users g2 on g2.group_id = g.id and g2.user_id = @UserId and g2.deleted = false 
                 left join tb_events e on e.group_id = g.id and e.deleted = false
