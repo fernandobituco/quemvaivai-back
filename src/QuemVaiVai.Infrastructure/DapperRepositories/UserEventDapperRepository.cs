@@ -38,7 +38,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return userEvent;
         }
 
-        public async Task<bool> CanUserEditEvent(int userId, int eventId)
+        public async Task<bool> CanUserEditEvent(int eventId, int userId)
         {
             var sql = "SELECT EXISTS ( SELECT 1 FROM {table} WHERE user_id = @UserId AND event_id = @EventId AND role in (1, 2) AND deleted = false);";
             var exists = await Get<bool>(sql, new { UserId = userId, EventId = eventId });

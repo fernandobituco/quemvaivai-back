@@ -146,5 +146,18 @@ namespace QuemVaiVai.Api.Controllers
             );
             return Result<EventCardResponse>.Success(response);
         }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<bool>> DeleteGroup(int id)
+        {
+            var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
+
+            await _eventAppService.DeleteEventAsync(id, userId);
+
+            return Result<bool>.Success(true);
+        }
     }
 }
