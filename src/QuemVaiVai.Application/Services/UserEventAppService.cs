@@ -44,11 +44,26 @@ namespace QuemVaiVai.Application.Services
 
         public async Task ChangeStatus(int eventId, int userId, Status status)
         {
-            var userEvent = await _userEventDapperRepository.GetByEventIdAndUserId(eventId, userId) ?? throw new NotFoundException("UserEvent");
+            var userEvent = await _userEventDapperRepository.GetByEventIdAndUserId(eventId, userId);
 
-            userEvent.Status = status;
+            if (userEvent != null)
+            {
+                userEvent.Status = status;
+                await _repository.UpdateAsync(userEvent);
+                return;
+            }
+            else
+            {
+                UserEvent newUserEvent = new()
+                {
+                    EventId = (int)eventId,
+                    UserId = userId,
+                    Role = Role.GUEST,
+                    Status = status
+                };
 
-            await _repository.UpdateAsync(userEvent);
+                await _repository.AddAsync(newUserEvent, userId);
+            }
         }
 
         public async Task JoinEvent(Guid inviteCode, int userId, Status status)
@@ -60,9 +75,9 @@ namespace QuemVaiVai.Application.Services
                 throw new NotFoundException("Group");
             }
 
-            var isUserInGroupEvent = await _userEventDapperRepository.GetIdByEventIdAndUserId((int)eventId, userId);
+            var isUserInEvent = await _userEventDapperRepository.GetIdByEventIdAndUserId((int)eventId, userId);
 
-            if (isUserInGroupEvent > 0)
+            if (isUserInEvent > 0)
             {
                 var userEvent = await _userEventDapperRepository.GetByEventIdAndUserId((int)eventId, userId) ?? throw new NotFoundException("UserEvent");
 
