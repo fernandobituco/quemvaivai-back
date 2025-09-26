@@ -16,7 +16,7 @@ namespace QuemVaiVai.Domain.Responses
         int Going,
         bool CanEdit = true,
         bool ActiveVote = false,
-        bool UserHasTaskItem = false,
+        bool ActiveTaskList = false,
         Status? Status = null
         );
 }

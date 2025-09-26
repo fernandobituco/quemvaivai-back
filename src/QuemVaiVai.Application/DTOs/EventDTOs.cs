@@ -16,6 +16,7 @@ namespace QuemVaiVai.Application.DTOs
         public string GroupName { get; set; } = string.Empty;
         public Guid InviteCode { get; set; }
         public bool ActiveVote { get; set; }
+        public bool ActiveTaskList { get; set; }
         public Status Status { get; set; }
 
         //public ICollection<Comment> Comments { get; set; } = [];
@@ -58,7 +59,7 @@ namespace QuemVaiVai.Application.DTOs
         public int Going { get; set; }
         public int Interested { get; set; }
         public bool ActiveVote { get; set; }
-        public bool UserHasTaskItem { get; set; }
+        public bool ActiveTaskList { get; set; }
         public bool CanEdit { get; set; }
         public int GroupId { get; set; }
         public string GroupName { get; set; } = string.Empty;

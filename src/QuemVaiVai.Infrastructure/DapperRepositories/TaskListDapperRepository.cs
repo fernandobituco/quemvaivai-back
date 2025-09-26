@@ -1,4 +1,5 @@
 ﻿
+using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
 using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Infrastructure.Contexts;
@@ -13,15 +14,16 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
         {
         }
 
-        public async Task<IEnumerable<TaskList>> GetAllByEventId(int eventId)
+        public async Task<List<TaskListDTO>> GetAllByEventId(int eventId)
         {
-            var sql = "select id as Id, title as Title FROM {table} WHERE eventId = @EventId and deleted = false";
-            return await GetAll(sql, new { EventId = eventId });
+            var sql = "select id as Id, title as Title FROM {table} WHERE event_id = @EventId and deleted = false";
+            var result = await GetAll<TaskListDTO>(sql, new { EventId = eventId });
+            return result.ToList();
         }
 
         public async Task<TaskList?> GetById(int id)
         {
-            var sql = GetBaseEntityValues + ", title as Title , eventId as EventIt FROM {table} WHERE id = @Id and deleted = false";
+            var sql = GetBaseEntityValues + ", title as Title , eventId as EventId FROM {table} WHERE id = @Id and deleted = false";
             var taskList = await Get(sql, new { Id = id });
 
             return taskList;

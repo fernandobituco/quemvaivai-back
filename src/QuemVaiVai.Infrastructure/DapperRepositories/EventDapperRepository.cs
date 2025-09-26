@@ -135,6 +135,60 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             return eventDto;
         }
 
+        public async Task<EventCardDTO?> GetCardById(int id, int userId)
+        {
+            var sql = new StringBuilder(@"
+                select 
+                    t.id as Id, 
+                    t.title as Title, 
+                    t.location as Location, 
+                    t.description as Description, 
+                    t.event_date as EventDate, 
+                    t.group_id as GroupId, 
+                    t.invite_code as InviteCode, 
+                    tg.name as GroupName, 
+                    tue.status as Status, 
+                    COUNT(DISTINCT tue_going.id) AS Going, 
+                    COUNT(DISTINCT tue_interested.id) AS Interested, 
+                    case when tue.role in (1,2) then true else false end as CanEdit, 
+                    case when exists (
+                        select 1 
+                        from tb_task_lists tl 
+                        where tl.event_id = t.id 
+                          and tl.deleted = false
+                    ) then true else false end as ActiveTaskList
+                from tb_events t 
+                left join tb_groups tg 
+                    on tg.id = t.group_id 
+                   and tg.deleted = false 
+                left join tb_user_events tue 
+                    on tue.user_id = @UserId 
+                   and tue.deleted = false 
+                   and tue.event_id = t.id 
+                left join tb_user_events tue_going 
+                    on tue_going.event_id = t.id 
+                   and tue_going.deleted = false 
+                   and tue_going.status = 1 
+                left join tb_user_events tue_interested 
+                    on tue_interested.event_id = t.id 
+                   and tue_interested.deleted = false 
+                   and tue_interested.status = 2 
+                where 
+                    t.id = @Id and t.deleted = false
+                group by 
+                    t.id, t.title, t.location, t.description, t.event_date, 
+                    t.group_id, t.invite_code, tg.name, tue.status, tue.role
+            ");
+
+            var e = await Get<EventCardDTO>(sql.ToString(), new
+            {
+                Id = id,
+                UserId = userId,
+            });
+
+            return e;
+        }
+
         public async Task<int?> GetIdByInviteCode(Guid inviteCode)
         {
             var sql = "SELECT id from {table} where invite_code = @InviteCode and deleted = false;";

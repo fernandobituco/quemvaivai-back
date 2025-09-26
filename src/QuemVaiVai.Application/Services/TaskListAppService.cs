@@ -60,7 +60,7 @@ namespace QuemVaiVai.Application.Services
 
         private async Task CanUserEditEvent(int userId, int eventId)
         {
-            if (!await _userEventDapperRepository.CanUserEditEvent(userId, eventId))
+            if (!await _userEventDapperRepository.CanUserEditEvent(eventId, userId))
                 throw new UnauthorizedException("You cannot edit this event.");
         }
     }

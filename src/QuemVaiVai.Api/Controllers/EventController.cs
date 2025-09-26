@@ -29,7 +29,6 @@ namespace QuemVaiVai.Api.Controllers
             _eventDapperRepository = eventDapperRepository;
         }
 
-
         [HttpPost]
         [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status400BadRequest)]
@@ -82,7 +81,7 @@ namespace QuemVaiVai.Api.Controllers
                 e.Going,
                 e.CanEdit,
                 e.ActiveVote,
-                false,
+                e.ActiveTaskList,
                 e.Status
             ))
             .ToList();
@@ -112,7 +111,40 @@ namespace QuemVaiVai.Api.Controllers
                 result.Interested,
                 result.Going,
                 false,
-                result.ActiveVote
+                result.ActiveVote,
+                result.ActiveTaskList
+            );
+
+            return Result<EventCardResponse>.Success(response);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<EventCardResponse>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<EventCardResponse>> GetEventsById(int id)
+        {
+            ModelStateValidation();
+
+            var userId = _userContext.GetCurrentUserId() ?? throw new UnauthorizedException("Invalid user ID in token.");
+
+            var e = await _eventDapperRepository.GetCardById(id, userId);
+
+            EventCardResponse response = new EventCardResponse(
+                e.Id,
+                e.Title,
+                e.Description,
+                e.Location,
+                e.EventDate,
+                e.InviteCode,
+                e.GroupName,
+                e.GroupId,
+                e.Interested,
+                e.Going,
+                e.CanEdit,
+                e.ActiveVote,
+                e.ActiveTaskList,
+                e.Status
             );
 
             return Result<EventCardResponse>.Success(response);
@@ -142,7 +174,8 @@ namespace QuemVaiVai.Api.Controllers
                 result.Interested,
                 result.Going,
                 true,
-                result.ActiveVote
+                result.ActiveVote,
+                result.ActiveTaskList
             );
             return Result<EventCardResponse>.Success(response);
         }
