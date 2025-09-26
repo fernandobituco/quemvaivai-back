@@ -29,5 +29,4 @@ namespace QuemVaiVai.Infrastructure.Factories
             };
         }
     }
-
 }

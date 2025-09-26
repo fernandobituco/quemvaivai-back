@@ -10,6 +10,7 @@ using QuemVaiVai.Domain.Services;
 using QuemVaiVai.Infrastructure.Contexts;
 using QuemVaiVai.Infrastructure.DapperRepositories;
 using QuemVaiVai.Infrastructure.Email;
+using QuemVaiVai.Infrastructure.Factories;
 using QuemVaiVai.Infrastructure.Repositories;
 using QuemVaiVai.Infrastructure.Security;
 
@@ -63,5 +64,8 @@ public static class DependencyInjection
 
         //Contexts
         services.AddScoped<IUserContext, UserContext>();
+
+        // Factory
+        services.AddSingleton<EmailSenderFactory>();
     }
 }
