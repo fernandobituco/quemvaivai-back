@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using QuemVaiVai.Application.Interfaces.Email;
 using QuemVaiVai.Infrastructure.Email;
@@ -8,10 +8,12 @@ using SendGrid.Helpers.Mail;
 public class SendGridEmailSender : IEmailSender
 {
     private readonly SendGridSettings _settings;
+    private readonly IHostEnvironment _env;
 
-    public SendGridEmailSender(IOptions<SendGridSettings> settings)
+    public SendGridEmailSender(IOptions<SendGridSettings> settings, IHostEnvironment env)
     {
         _settings = settings.Value;
+        _env = env;
     }
 
     public async Task SendEmailAsync(string to, string subject, string bodyHtml)
@@ -21,6 +23,10 @@ public class SendGridEmailSender : IEmailSender
         var toAddress = new EmailAddress(to);
         var msg = MailHelper.CreateSingleEmail(from, toAddress, subject, null, bodyHtml);
 
+        if (_env.IsDevelopment())
+        {
+            msg.SetClickTracking(false, false);
+        }
         var response = await client.SendEmailAsync(msg);
 
         if (!response.IsSuccessStatusCode)

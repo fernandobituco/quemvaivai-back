@@ -15,7 +15,29 @@ namespace QuemVaiVai.Infrastructure.Contexts
 
         public int? GetCurrentUserId()
         {
-            var user = _httpContextAccessor.HttpContext?.User;
+            var httpContext = _httpContextAccessor.HttpContext;
+
+            var authorization =
+                httpContext?.Request.Headers["Authorization"]
+                    .FirstOrDefault();
+
+            Console.WriteLine(
+                $"Authorization recebido pelo backend: {authorization}"
+            );
+
+            var user = httpContext?.User;
+
+            Console.WriteLine(
+                $"IsAuthenticated: {user?.Identity?.IsAuthenticated}"
+            );
+
+            Console.WriteLine(
+                $"AuthenticationType: {user?.Identity?.AuthenticationType}"
+            );
+
+            Console.WriteLine(
+                $"Claims: {string.Join(" | ", user?.Claims.Select(c => $"{c.Type}={c.Value}") ?? [])}"
+            );
 
             if (user?.Identity?.IsAuthenticated == true)
             {

@@ -33,6 +33,7 @@ public static class DependencyInjection
         services.AddScoped<IEventAppService, EventAppService>();
         services.AddScoped<IUserEventAppService, UserEventAppService>();
         services.AddScoped<ITaskListAppService, TaskListAppService>();
+        services.AddScoped<IPasswordResetTokenAppService, PasswordResetTokenAppService>();
 
         //Repositories
         services.AddScoped<IUserRepository, UserRepository>();
@@ -43,6 +44,7 @@ public static class DependencyInjection
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IUserEventRepository, UserEventRepository>();
         services.AddScoped<ITaskListRepository, TaskListRepository>();
+        services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 
         //DapperRepositories
         services.AddScoped<IUserDapperRepository, UserDapperRepository>();
@@ -52,9 +54,10 @@ public static class DependencyInjection
         services.AddScoped<IEventDapperRepository, EventDapperRepository>();
         services.AddScoped<IUserEventDapperRepository, UserEventDapperRepository>();
         services.AddScoped<ITaskListDapperRepository, TaskListDapperRepository>();
+        services.AddScoped<IPasswordResetTokenDapperRepository, PasswordResetTokenDapperRepository>();
 
         //Security
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IHasher, Hasher>();
         services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
 
         //Email

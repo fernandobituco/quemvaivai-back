@@ -18,7 +18,7 @@ namespace QuemVaiVai.Tests.Fixtures.Application
     {
         public Mock<IUserRepository> UserRepoMock { get; } = new();
         public Mock<IUserDapperRepository> DapperRepoMock { get; } = new();
-        public Mock<IPasswordHasher> PasswordHasherMock { get; } = new();
+        public Mock<IHasher> PasswordHasherMock { get; } = new();
         public Mock<IEmailSender> EmailSenderMock { get; } = new();
         public Mock<IEmailTemplateBuilder> EmailTemplateBuilderMock { get; } = new();
         public Mock<IEmailConfirmationTokenService> EmailTokenServiceMock { get; } = new();

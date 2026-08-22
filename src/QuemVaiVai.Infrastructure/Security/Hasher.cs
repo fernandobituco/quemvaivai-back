@@ -4,13 +4,11 @@ using QuemVaiVai.Application.Interfaces.Security;
 
 namespace QuemVaiVai.Infrastructure.Security
 {
-    public class PasswordHasher : IPasswordHasher
+    public class Hasher : IHasher
     {
         public string Hash(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
-
-
         }
 
         public bool Verify(string password, string hashedPassword)

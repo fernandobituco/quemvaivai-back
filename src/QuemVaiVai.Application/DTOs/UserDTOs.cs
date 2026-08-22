@@ -63,4 +63,12 @@ namespace QuemVaiVai.Application.DTOs
         public Role Role{ get; set; }
         public Status? Status { get; set; } = null;
     }
+
+    public class PasswordResetDTO
+    {
+        public int UserId { get; set; }
+        public string PasswordResetToken { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string PasswordConfirmation { get; set; } = string.Empty;
+    }
 }

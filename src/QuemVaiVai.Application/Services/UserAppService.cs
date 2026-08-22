@@ -9,7 +9,6 @@ using QuemVaiVai.Domain.Interfaces.Services;
 using QuemVaiVai.Domain.Entities;
 using QuemVaiVai.Domain.Exceptions;
 using Microsoft.Extensions.Options;
-using QuemVaiVai.Domain.Responses;
 
 namespace QuemVaiVai.Application.Services
 {
@@ -17,7 +16,7 @@ namespace QuemVaiVai.Application.Services
     {
         private readonly IUserDapperRepository _dapperRepository;
         private readonly IUserService _userService;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IHasher _hasher;
         private readonly IEmailSender _emailSender;
         private readonly IEmailTemplateBuilder _emailTemplateBuilder;
         private readonly IEmailConfirmationTokenService _emailConfirmationTokenService;
@@ -27,7 +26,7 @@ namespace QuemVaiVai.Application.Services
         public UserAppService(
             IUserRepository repository,
             IUserDapperRepository dapperRepository,
-            IPasswordHasher passwordHasher,
+            IHasher hasher,
             ITokenGenerator tokenGenerator,
             IMapper mapper,
             IUserService userService,
@@ -38,7 +37,7 @@ namespace QuemVaiVai.Application.Services
             IOptions<AppSettings> appSettings) : base(repository, mapper)
         {
             _dapperRepository = dapperRepository;
-            _passwordHasher = passwordHasher;
+            _hasher = hasher;
             _userService = userService;
             _emailSender = emailSender;
             _emailTemplateBuilder = emailTemplateBuilder;
@@ -57,7 +56,7 @@ namespace QuemVaiVai.Application.Services
 
             User user = _mapper.Map<User>(request);
 
-            user.PasswordHash = _passwordHasher.Hash(request.Password);
+            user.PasswordHash = _hasher.Hash(request.Password);
 
             var userCreated = await CreateAsync(user);
             var response = new UserDTO();
@@ -103,6 +102,17 @@ namespace QuemVaiVai.Application.Services
             return _mapper.Map<UserDTO>(user);
         }
 
+        public async Task UpdatePassword(int userId, string password, string passwordConfirmation)
+        {
+            ValidatePassword(password, passwordConfirmation);
+
+            var user = await _dapperRepository.GetCompleteForUpdateById(userId) ?? throw new NotFoundException("Usuário");
+
+            user.PasswordHash = _hasher.Hash(password);
+
+            await _repository.UpdateAsync(user, userId);
+        }
+
         public async Task DeleteUserAsync(int id)
         {
             await _repository.DeleteAsync(id, id);
@@ -110,7 +120,7 @@ namespace QuemVaiVai.Application.Services
 
         private async Task ValidateEmail(string email, int? id = null)
         {
-            if (!IsValidEmail(email))
+            if (!_userService.ValidateEmail(email))
                 throw new ArgumentException("Email inválido", nameof(email));
 
             await ValidateEmailNotExistsAsync(email, id);
@@ -147,19 +157,6 @@ namespace QuemVaiVai.Application.Services
                 {
                     throw new EmailAlreadyExistsException($"O email {email} já está em uso");
                 }
-            }
-        }
-
-        private static bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
             }
         }
     }

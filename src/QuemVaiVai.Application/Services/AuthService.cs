@@ -20,20 +20,20 @@ namespace QuemVaiVai.Application.Services
         private readonly IUserDapperRepository _userDapperRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenGenerator _tokenGenerator;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IHasher _hasher;
         private readonly TokenSettings _tokenSettings;
 
         public AuthService(
             IUserDapperRepository userDapperRepository,
             IRefreshTokenRepository refreshTokenRepository,
             ITokenGenerator tokenGenerator,
-            IPasswordHasher passwordHasher,
+            IHasher hasher,
             IOptions<TokenSettings> tokenSettings)
         {
             _userDapperRepository = userDapperRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _tokenGenerator = tokenGenerator;
-            _passwordHasher = passwordHasher;
+            _hasher = hasher;
             _tokenSettings = tokenSettings.Value;
         }
 
@@ -47,7 +47,7 @@ namespace QuemVaiVai.Application.Services
             if (!user.Confirmed)
                 throw new UnauthorizedException("Essa conta ainda não foi confirmada");
 
-            if (!_passwordHasher.Verify(password, user.PasswordHash))
+            if (!_hasher.Verify(password, user.PasswordHash))
                 throw new UnauthorizedException("Email ou senha inválidos");
 
             return await GenerateTokensAsync(user);

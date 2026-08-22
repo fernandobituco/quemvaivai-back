@@ -29,6 +29,7 @@ namespace QuemVaiVai.Infrastructure.Contexts
         public DbSet<TaskItem> TaskItems => Set<TaskItem>();
         public DbSet<TaskList> TaskLists => Set<TaskList>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

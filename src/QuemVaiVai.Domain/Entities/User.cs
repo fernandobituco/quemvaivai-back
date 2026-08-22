@@ -18,5 +18,6 @@ namespace QuemVaiVai.Domain.Entities
         public ICollection<Comment> Comments { get; set; } = [];
         public ICollection<TaskItem> TaskItems { get; set; } = [];
         public ICollection<Vote> Votes { get; set; } = [];
+        public ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = [];
     }
 }

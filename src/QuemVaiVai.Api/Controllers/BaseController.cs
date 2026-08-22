@@ -1,10 +1,7 @@
 using AutoMapper;
-using Azure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Domain.Exceptions;
-using QuemVaiVai.Domain.Responses;
 
 namespace QuemVaiVai.Api.Controllers
 {
@@ -24,26 +21,6 @@ namespace QuemVaiVai.Api.Controllers
             _logger = logger;
             _mapper = mapper;
             _userContext = userContext;
-        }
-
-        protected Guid GetCurrentUserId()
-        {
-            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                throw new System.Exception("User is not authenticated.");
-            }
-
-            return Guid.Parse(userIdClaim.Value);
-        }
-        protected Result<TResponse> Success<TResponse>(TResponse result)
-        {
-            return Result<TResponse>.Success(result);
-        }
-
-        protected Result<TResponse> Fail<TResponse>(string errorMessage, int statusCode = 400)
-        {
-            return Result<TResponse>.Failure(errorMessage, statusCode);
         }
 
         protected void ModelStateValidation()

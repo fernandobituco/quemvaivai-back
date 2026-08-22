@@ -11,7 +11,8 @@ public static class DatabaseConfiguration
     {
         services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(connectionString)
+            .LogTo(Console.WriteLine, LogLevel.Error);
         });
 
         services.AddScoped<IDbConnection>(sp =>

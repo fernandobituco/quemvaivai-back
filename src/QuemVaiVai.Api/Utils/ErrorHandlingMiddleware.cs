@@ -24,6 +24,8 @@ public class ErrorHandlingMiddleware
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
             var origin = context.Request.Headers.Origin.ToString();
 
             var corsOrigin = context.Response.Headers["Access-Control-Allow-Origin"].ToString();
@@ -41,7 +43,7 @@ public class ErrorHandlingMiddleware
                 _ => StatusCodes.Status500InternalServerError
             };
 
-            var error = Result<string>.Failure(ex.Message, context.Response.StatusCode);
+            var error = Result<string>.Failure(ex.Message, ex.StackTrace, context.Response.StatusCode);
 
             var json = JsonSerializer.Serialize(error);
             await context.Response.WriteAsync(json);

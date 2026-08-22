@@ -64,5 +64,13 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
             return user;
         }
+
+        public async Task<int?> GetIdByEmail(string email)
+        {
+            var sql = "select id as Id FROM {table} WHERE email = @Email and deleted = false";
+            var userId = await Get<int>(sql, new { Email = email });
+
+            return userId;
+        }
     }
 }

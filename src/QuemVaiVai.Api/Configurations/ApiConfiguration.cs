@@ -58,6 +58,18 @@ public static class ApiConfiguration
                 ValidAudience = tokenSettings.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    Console.WriteLine(
+                        $"JWT Authentication Failed: {context.Exception.Message}"
+                    );
+
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         services.AddAuthorization();

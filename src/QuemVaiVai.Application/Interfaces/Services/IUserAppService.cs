@@ -8,6 +8,7 @@ namespace QuemVaiVai.Application.Interfaces.Services
     {
         Task<UserDTO> CreateUserAsync(CreateUserDTO request);
         Task<UserDTO> UpdateUserAsync(UpdateUserDTO request);
+        Task UpdatePassword(int userId, string password, string passwordConfirmation);
         Task DeleteUserAsync(int id);
     }
 }

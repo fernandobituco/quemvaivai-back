@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using QuemVaiVai.Application.DTOs;
 using QuemVaiVai.Application.Interfaces.Contexts;
 using QuemVaiVai.Application.Interfaces.DapperRepositories;
-using QuemVaiVai.Application.Interfaces.Repositories;
 using QuemVaiVai.Application.Interfaces.Services;
 using QuemVaiVai.Domain.Exceptions;
 using QuemVaiVai.Domain.Responses;
-using QuemVaiVai.Infrastructure.DapperRepositories;
 
 namespace QuemVaiVai.Api.Controllers
 {

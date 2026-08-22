@@ -34,7 +34,7 @@ namespace QuemVaiVai.Api.Controllers
         {
             var response = await _authService.LoginAsync(request.Email, request.Password);
             SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry, response.RefreshToken, response.RefreshTokenExpiry));
         }
 
         [HttpPost("refresh")]
@@ -48,7 +48,7 @@ namespace QuemVaiVai.Api.Controllers
 
             SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
 
-            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry, response.RefreshToken, response.RefreshTokenExpiry));
         }
 
         [HttpPost("force-refresh")]
@@ -60,7 +60,7 @@ namespace QuemVaiVai.Api.Controllers
 
             var response = await _authService.RefreshTokenAsync(refreshToken) ?? throw new InvalidTokenException();
             SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry));
+            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry, response.RefreshToken, response.RefreshTokenExpiry));
         }
 
         [HttpPost("logout")]

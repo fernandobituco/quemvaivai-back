@@ -9,9 +9,17 @@ namespace QuemVaiVai.Domain.Services
         {
         }
 
-        public Task<bool> ValidateEmail(string email)
+        public bool ValidateEmail(string email)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void ValidatePassword(string password)
