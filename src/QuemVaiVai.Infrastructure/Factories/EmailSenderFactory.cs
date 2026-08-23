@@ -24,6 +24,7 @@ namespace QuemVaiVai.Infrastructure.Factories
             {
                 "smtp" => _serviceProvider.GetRequiredService<SmtpEmailSender>(),
                 "sendgrid" => _serviceProvider.GetRequiredService<SendGridEmailSender>(),
+                "brevo" => _serviceProvider.GetRequiredService<BrevoEmailSender>(),
                 //"mailgun" => _serviceProvider.GetRequiredService<MailgunEmailSender>(),
                 _ => throw new Exception($"Provedor de email não suportado: {provider}")
             };

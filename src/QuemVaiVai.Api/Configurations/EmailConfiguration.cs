@@ -10,6 +10,7 @@ public static class EmailConfiguration
     {
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.Configure<SendGridSettings>(configuration.GetSection("SendGrid"));
+        services.Configure<BrevoSettings>(configuration.GetSection("Brevo"));
 
         services.AddTransient<IEmailSender>(sp =>
         {

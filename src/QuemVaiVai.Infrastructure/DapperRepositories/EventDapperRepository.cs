@@ -58,6 +58,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                 where 
                     t.deleted = false
                     and (tue.id is not null or tgu.id is not null)
+                order by created_at desc 
             ");
 
             // 🔹 GroupId
