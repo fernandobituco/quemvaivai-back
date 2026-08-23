@@ -14,13 +14,11 @@ namespace QuemVaiVai.Infrastructure.Email
     public class BrevoEmailSender : IEmailSender
     {
         private readonly BrevoSettings _settings;
-        private readonly IHostEnvironment _env;
         private readonly HttpClient _httpClient;
 
-        public BrevoEmailSender(IOptions<BrevoSettings> settings, IHostEnvironment env, HttpClient httpClient)
+        public BrevoEmailSender(IOptions<BrevoSettings> settings, HttpClient httpClient)
         {
             _settings = settings.Value;
-            _env = env;
             _httpClient = httpClient;
         }
         public async Task SendEmailAsync(string toEmail, string subject, string bodyHtml)

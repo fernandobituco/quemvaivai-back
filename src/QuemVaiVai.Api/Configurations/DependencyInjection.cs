@@ -63,7 +63,7 @@ public static class DependencyInjection
         //Email
         services.AddScoped<IEmailSender, SmtpEmailSender>();
         services.AddScoped<IEmailSender, SendGridEmailSender>();
-        services.AddScoped<IEmailSender, BrevoEmailSender>();
+        services.AddHttpClient<IEmailSender, BrevoEmailSender>();
         services.AddScoped<IEmailTemplateBuilder, EmailTemplateBuilder>();
 
         //Contexts
