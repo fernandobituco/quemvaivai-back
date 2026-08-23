@@ -65,15 +65,15 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             if (filters.GroupId.HasValue)
             {
                 if (filters.GroupId == 0)
-                    sql.Append(" and t.group_id is null");
+                    sql.Append(" and t.group_id is null ");
                 else
-                    sql.Append(" and t.group_id = @GroupId");
+                    sql.Append(" and t.group_id = @GroupId ");
             }
 
             // 🔹 SelfStatus
             if (filters.Situation.HasValue)
             {
-                sql.Append(" and tue.status = @Situation");
+                sql.Append(" and tue.status = @Situation ");
             }
 
             // 🔹 Status (Upcoming ou Past)
@@ -81,11 +81,11 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             {
                 if (filters.Status == EventStatusFilter.Upcoming)
                 {
-                    sql.Append(" and t.event_date >= NOW()");
+                    sql.Append(" and t.event_date >= NOW() ");
                 }
                 else if (filters.Status == EventStatusFilter.Past)
                 {
-                    sql.Append(" and t.event_date < NOW()");
+                    sql.Append(" and t.event_date < NOW() ");
                 }
             }
 
