@@ -85,7 +85,7 @@ namespace QuemVaiVai.Api.Controllers
             return Result<CreatedUserResponse>.Success(response);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
@@ -99,6 +99,28 @@ namespace QuemVaiVai.Api.Controllers
             }
 
             await _userAppService.DeleteUserAsync(id);
+
+            var refreshToken = GetRefreshTokenFromCookie();
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                await _authService.RevokeTokenAsync(refreshToken);
+            }
+
+            Response.Cookies.Delete("refreshToken");
+
+            return Result<bool>.Success(true);
+        }
+
+        [HttpPost("delete")]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
+        public async Task<Result<bool>> DeleteUserExternal([FromBody] UserLoginDTO request)
+        {
+
+            var loginResponse = await _authService.LoginAsync(request.Email, request.Password);
+
+            await _userAppService.DeleteUserAsync(loginResponse.Item2);
 
             var refreshToken = GetRefreshTokenFromCookie();
             if (!string.IsNullOrEmpty(refreshToken))

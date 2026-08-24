@@ -33,8 +33,8 @@ namespace QuemVaiVai.Api.Controllers
         public async Task<Result<LoginResponse>> Login([FromBody] UserLoginDTO request)
         {
             var response = await _authService.LoginAsync(request.Email, request.Password);
-            SetRefreshTokenCookie(response.RefreshToken, response.RefreshTokenExpiry);
-            return Result<LoginResponse>.Success(new LoginResponse(response.AccessToken, response.AccessTokenExpiry, response.RefreshToken, response.RefreshTokenExpiry));
+            SetRefreshTokenCookie(response.Item1.RefreshToken, response.Item1.RefreshTokenExpiry);
+            return Result<LoginResponse>.Success(new LoginResponse(response.Item1.AccessToken, response.Item1.AccessTokenExpiry, response.Item1.RefreshToken, response.Item1.RefreshTokenExpiry));
         }
 
         [HttpPost("refresh")]

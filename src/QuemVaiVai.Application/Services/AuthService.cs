@@ -37,7 +37,7 @@ namespace QuemVaiVai.Application.Services
             _tokenSettings = tokenSettings.Value;
         }
 
-        public async Task<LoginResponseDTO> LoginAsync(string email, string password)
+        public async Task<(LoginResponseDTO, int)> LoginAsync(string email, string password)
         {
             var user = await _userDapperRepository.GetSensitiveByEmail(email);
 
@@ -50,7 +50,7 @@ namespace QuemVaiVai.Application.Services
             if (!_hasher.Verify(password, user.PasswordHash))
                 throw new UnauthorizedException("Email ou senha inválidos");
 
-            return await GenerateTokensAsync(user);
+            return (await GenerateTokensAsync(user), user.Id);
         }
 
         public async Task<LoginResponseDTO?> RefreshTokenAsync(string refreshToken)

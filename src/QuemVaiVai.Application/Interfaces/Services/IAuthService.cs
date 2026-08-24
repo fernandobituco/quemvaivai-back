@@ -5,7 +5,7 @@ namespace QuemVaiVai.Application.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<LoginResponseDTO> LoginAsync(string email, string password);
+        Task<(LoginResponseDTO, int)> LoginAsync(string email, string password);
         Task<LoginResponseDTO?> RefreshTokenAsync(string refreshToken);
         Task RevokeTokenAsync(string refreshToken);
         Task RevokeAllUserTokensAsync(int userId);
