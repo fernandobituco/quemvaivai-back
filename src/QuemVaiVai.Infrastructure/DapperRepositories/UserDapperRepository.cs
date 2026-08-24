@@ -72,5 +72,51 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
 
             return userId;
         }
+
+        public async Task<int?> DeleteCascadeById(int id)
+        {
+            var sql = @"
+                BEGIN;
+
+                -- 1. Tokens do usuário
+                DELETE FROM tb_email_confirmation_tokens
+                WHERE user_id = @Id;
+
+                DELETE FROM tb_password_reset_token
+                WHERE user_id = @Id;
+
+                DELETE FROM tb_refresh_tokens
+                WHERE user_id = @Id;
+
+                -- 2. Votos realizados pelo usuário
+                DELETE FROM tb_votes
+                WHERE user_id = @Id;
+
+                -- 3. Comentários realizados pelo usuário
+                DELETE FROM tb_comments
+                WHERE user_id = @Id;
+
+                -- 4. Relação usuário/evento
+                DELETE FROM tb_user_events
+                WHERE user_id = @Id;
+
+                -- 5. Tarefas atribuídas ao usuário
+                DELETE FROM tb_task_items
+                WHERE assigned_user_id  = @Id;
+
+                -- 6. Relação usuário/grupo
+                DELETE FROM tb_group_users
+                WHERE user_id = @Id;
+
+                -- 7. Finalmente, usuário
+                DELETE FROM tb_users
+                WHERE id = @Id;
+
+                COMMIT;
+            ";
+            var userId = await Get<int>(sql, new { Id = id });
+
+            return userId;
+        }
     }
 }

@@ -115,7 +115,7 @@ namespace QuemVaiVai.Application.Services
 
         public async Task DeleteUserAsync(int id)
         {
-            await _repository.DeleteAsync(id, id);
+            await _dapperRepository.DeleteCascadeById(id);
         }
 
         private async Task ValidateEmail(string email, int? id = null)
