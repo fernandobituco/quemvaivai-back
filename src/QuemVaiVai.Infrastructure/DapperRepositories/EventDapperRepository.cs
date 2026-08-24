@@ -57,8 +57,7 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
                    and tgu.deleted = false
                 where 
                     t.deleted = false
-                    and (tue.id is not null or tgu.id is not null)
-                order by created_at desc 
+                    and (tue.id is not null or tgu.id is not null) 
             ");
 
             // 🔹 GroupId
@@ -92,7 +91,9 @@ namespace QuemVaiVai.Infrastructure.DapperRepositories
             sql.Append(@"
                 group by 
                     t.id, t.title, t.location, t.description, t.event_date, 
-                    t.group_id, t.invite_code, tg.name, tue.status, tue.role
+                    t.group_id, t.invite_code, tg.name, tue.status, tue.role 
+
+                order by t.created_at desc
             ");
 
             var events = await GetAll<EventCardDTO>(sql.ToString(), new

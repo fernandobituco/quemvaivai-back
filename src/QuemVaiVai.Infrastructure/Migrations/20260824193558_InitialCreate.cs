@@ -148,6 +148,34 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tb_password_reset_token",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    token_hash = table.Column<string>(type: "text", nullable: false),
+                    expires_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    used = table.Column<bool>(type: "boolean", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_user = table.Column<int>(type: "integer", nullable: true),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_user = table.Column<int>(type: "integer", nullable: true),
+                    deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    deleted_user = table.Column<int>(type: "integer", nullable: true),
+                    deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_password_reset_token", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_tb_password_reset_token_tb_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "tb_users",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tb_refresh_tokens",
                 columns: table => new
                 {
@@ -295,10 +323,9 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TaskListId = table.Column<int>(type: "integer", nullable: false),
+                    task_list_id = table.Column<int>(type: "integer", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    AssignedTo = table.Column<int>(type: "integer", nullable: true),
-                    AssignedUserId = table.Column<int>(type: "integer", nullable: true),
+                    assigned_user_id = table.Column<int>(type: "integer", nullable: false),
                     is_done = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_user = table.Column<int>(type: "integer", nullable: true),
@@ -312,13 +339,13 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_tb_task_items", x => x.id);
                     table.ForeignKey(
-                        name: "FK_tb_task_items_tb_task_lists_TaskListId",
-                        column: x => x.TaskListId,
+                        name: "FK_tb_task_items_tb_task_lists_task_list_id",
+                        column: x => x.task_list_id,
                         principalTable: "tb_task_lists",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_tb_task_items_tb_users_AssignedUserId",
-                        column: x => x.AssignedUserId,
+                        name: "FK_tb_task_items_tb_users_assigned_user_id",
+                        column: x => x.assigned_user_id,
                         principalTable: "tb_users",
                         principalColumn: "id");
                 });
@@ -385,19 +412,24 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tb_password_reset_token_user_id",
+                table: "tb_password_reset_token",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tb_refresh_tokens_user_id",
                 table: "tb_refresh_tokens",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tb_task_items_AssignedUserId",
+                name: "IX_tb_task_items_assigned_user_id",
                 table: "tb_task_items",
-                column: "AssignedUserId");
+                column: "assigned_user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tb_task_items_TaskListId",
+                name: "IX_tb_task_items_task_list_id",
                 table: "tb_task_items",
-                column: "TaskListId");
+                column: "task_list_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_task_lists_event_id",
@@ -441,6 +473,9 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "tb_group_users");
+
+            migrationBuilder.DropTable(
+                name: "tb_password_reset_token");
 
             migrationBuilder.DropTable(
                 name: "tb_refresh_tokens");

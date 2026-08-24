@@ -57,8 +57,6 @@ namespace QuemVaiVai.Application.Services
 
         public async Task<GroupDTO> GetById(int groupId, int userId)
         {
-            await CanUserEditGroup(groupId, userId);
-
             var group = _mapper.Map<GroupDTO>(await _groupDapperRepository.GetById(groupId));
 
             group.MemberCount = await _groupUserDapperRepository.GetMemberCountByGroupId(groupId);

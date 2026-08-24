@@ -12,9 +12,17 @@ namespace QuemVaiVai.Infrastructure.Mappings
 
             builder.HasKey(ti => ti.Id);
 
-
             builder.Property(ti => ti.Description).HasColumnName("description").IsRequired();
             builder.Property(ti => ti.IsDone).HasColumnName("is_done").IsRequired();
+
+            builder.Property(u => u.AssignedUserId).HasColumnName("assigned_user_id").IsRequired();
+
+            builder.HasOne(ti => ti.AssignedUser)
+                   .WithMany(u => u.TaskItems)
+                   .HasForeignKey(ti => ti.AssignedUserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(u => u.TaskListId).HasColumnName("task_list_id").IsRequired();
 
             builder.HasOne(ti => ti.TaskList)
                    .WithMany(tl => tl.TaskItems)

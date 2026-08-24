@@ -8,7 +8,7 @@ namespace QuemVaiVai.Domain.Entities
 
         public string Description { get; set; } = null!;
 
-        public int? AssignedTo { get; set; }
+        public int? AssignedUserId { get; set; }
         public User? AssignedUser { get; set; }
 
         public bool IsDone { get; set; } = false;

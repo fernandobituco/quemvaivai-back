@@ -12,8 +12,8 @@ using QuemVaiVai.Infrastructure.Contexts;
 namespace QuemVaiVai.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250928130217_CreatePasswordResetTokenTable")]
-    partial class CreatePasswordResetTokenTable
+    [Migration("20260824193558_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -446,11 +446,9 @@ namespace QuemVaiVai.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AssignedTo")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("AssignedUserId")
-                        .HasColumnType("integer");
+                    b.Property<int>("AssignedUserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("assigned_user_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -482,7 +480,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                         .HasColumnName("is_done");
 
                     b.Property<int>("TaskListId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("task_list_id");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -870,7 +869,8 @@ namespace QuemVaiVai.Infrastructure.Migrations
                 {
                     b.HasOne("QuemVaiVai.Domain.Entities.User", "AssignedUser")
                         .WithMany("TaskItems")
-                        .HasForeignKey("AssignedUserId");
+                        .HasForeignKey("AssignedUserId")
+                        .IsRequired();
 
                     b.HasOne("QuemVaiVai.Domain.Entities.TaskList", "TaskList")
                         .WithMany("TaskItems")
